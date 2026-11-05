@@ -1,0 +1,63 @@
+MISES A JOUR EN LIGNE - HAYTHEM FOOD
+
+A FAIRE UNE SEULE FOIS
+1. Publiez ce dossier sur un hebergeur gratuit (Netlify Drop, Cloudflare Pages ou GitHub Pages).
+   Exemple Netlify : app.netlify.com/drop, puis glissez le dossier decompresse.
+2. Sur chaque borne, ouvrez l'adresse obtenue (https://...) et installez l'application.
+   L'application ne doit pas etre ouverte depuis un fichier copie sur l'appareil.
+
+NOTE : config.json est deja dans ce dossier. Publiez-le a cote de index.html.
+
+POUR CHANGER LE MENU, LES PRIX, LES PHOTOS OU LE BANDEAU
+1. Modifiez-les dans Admin sur UNE borne.
+2. Admin > Reglages > Mises a jour en ligne > Exporter config.json.
+3. Envoyez config.json sur votre site, a cote de index.html, en remplacant l'ancien.
+4. Toutes les bornes le reprennent seules (toutes les 10 minutes par defaut),
+   a l'ecran d'accueil, jamais pendant une commande.
+   Photo en ligne : dans config.json, mettez "img":"img/kefta.jpg" et envoyez le fichier dans le dossier img/.
+
+POUR AMELIORER L'APPLICATION
+Remplacez index.html (et sw.js) sur votre site. Chaque borne redemarre seule a l'ecran d'accueil.
+
+NE CHANGENT JAMAIS : historique des commandes, code PIN, imprimante, paiements, langue.
+Attention : le menu de config.json remplace celui des bornes (une categorie absente du fichier est retiree).
+
+
+V16 - LIAISON AVEC LE SITE haythemfood.com (ECRAN CUISINE + ECRAN CLIENTS)
+- Chaque commande validee sur la borne est envoyee au meme serveur (Supabase) que le site.
+  Elle apparait sur l'ecran cuisine (haythemfood.com/#cuisine) et sur l'ecran clients
+  (haythemfood.com/#file), avec le meme numero que sur le ticket de la borne.
+- Cuisine : se connecte comme avant (e-mail + mot de passe). Rien a changer sur le site.
+- Paiement carte / Payconiq : la cuisine voit "Carte · borne". Especes : "Especes" + "a verifier"
+  (a encaisser au comptoir).
+- Sans internet : la commande est gardee et renvoyee toute seule (toutes les 30 s). L'ecran de
+  confirmation affiche un avertissement rouge "Cuisine non prevenue" tant que ce n'est pas fait.
+  Dans ce cas le numero du ticket est un numero local ; le numero cuisine s'affiche ensuite
+  dans Admin > Commandes ("cuisine N°x").
+- Reglages : Admin > Reception > "Ecrans cuisine & clients" (activer/desactiver, ticket test,
+  boutons pour ouvrir les deux ecrans).
+
+V16 - CORRECTION : le recu sortait vide en mode d'impression "Navigateur / AirPrint / PDF"
+(la feuille d'impression masquait la fenetre de confirmation qui contient le recu).
+
+V16 - NOUVEAUTES DESIGN / RECU
+- Recu : logo + nom, adresse, telephone, site, horaires (et N° de TVA si renseigne) en haut,
+  message de remerciement en bas. A regler dans Admin > Imprimante > "Informations societe".
+  Les imprimantes thermiques (USB/Bluetooth/serie/reseau) impriment aussi le logo.
+- Langues : vrais drapeaux (images) au lieu des lettres FR / NL / GB.
+- Fond plus sombre, cartes plus nettes, contour or anime (survol, appui, selection).
+- Sous-menus avec photos : ordre 1 Garniture, 2 Sauces, 3 Supplements, 4 Boisson.
+  Les photos viennent de haythemfood.com/img/ (adresse du site reglable dans Admin > Reception).
+  Hors connexion, une icone s'affiche a la place de la photo.
+
+
+V17
+- Personnalisation en étapes : Garniture, puis Sauces, puis Suppléments, puis Boisson (bouton Suivant / ‹).
+- Nouvelle catégorie "Sauces" dans le menu latéral (photos des sauces, prix = Extra sauce).
+- Photos des plats recadrées sur le sandwich (zoom), contour or visible sur toutes les fenêtres.
+- config.json mis à jour avec la catégorie Sauces (publiez-le avec index.html et sw.js).
+- Fond plus sombre, grand logo incrusté en filigrane, logo or + mains en haut au centre, pot de sauce plastique dans le menu latéral.
+- Pourboire au paiement : le client choisit +1 / +2 / +5 € (montants réglables dans Admin > Dons & pourboires), ajouté au total, au ticket et à l'écran cuisine. Le QR don reste proposé à la fin de la commande.
+- Suggestion de frites avant le paiement (en plus des boissons et desserts).
+- Étiquettes sur les cartes : ★ Populaire (3 plats les plus vendus, après 10 commandes), 🌶 Épicé (merguez, piquant, pili-pili, harissa).
+- Pourboire : champ « Autre montant » pour que le client choisisse librement (jusqu'à 99 €).

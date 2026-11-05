@@ -1,0 +1,710 @@
+{
+ "v": 2,
+ "shop": "Haythem Food",
+ "promoAuto": true,
+ "promo": {
+  "t": "",
+  "s": ""
+ },
+ "opt": {
+  "sauces": [
+   "Mayonnaise",
+   "Ketchup",
+   "Andalouse",
+   "Algérienne",
+   "Samouraï",
+   "Blanche",
+   "Harissa",
+   "Américaine",
+   "Brazil",
+   "Bicky",
+   "Mammouth",
+   "Tartare",
+   "Cocktail",
+   "Curry ketchup",
+   "Sauce à l’ail",
+   "Barbecue",
+   "Moutarde",
+   "Piquante",
+   "Pili-pili",
+   "Sweet chili",
+   "Pita"
+  ],
+  "crud": [
+   "Salade",
+   "Tomates",
+   "Oignons",
+   "Concombre",
+   "Maïs",
+   "Carottes",
+   "Chou blanc",
+   "Olives",
+   "Poivrons"
+  ],
+  "drinks": [
+   "Coca-Cola",
+   "Coca-Cola Zéro",
+   "Fanta",
+   "Sprite",
+   "Schweppes Lemon",
+   "Schweppes Agrumes",
+   "Ice Tea",
+   "Orangina",
+   "Eau"
+  ]
+ },
+ "cats": [
+  {
+   "n": "Dürüms",
+   "e": "🌯",
+   "items": [
+    {
+     "n": "Chawarma",
+     "p": 7.5
+    },
+    {
+     "n": "Kefta",
+     "p": 7.5
+    },
+    {
+     "n": "Hamburger",
+     "p": 7
+    },
+    {
+     "n": "Poulet",
+     "p": 7.5
+    },
+    {
+     "n": "Poulet pané",
+     "p": 8
+    },
+    {
+     "n": "Merguez",
+     "p": 7.5
+    },
+    {
+     "n": "Fallafels",
+     "p": 7.5
+    },
+    {
+     "n": "Foie",
+     "p": 8
+    },
+    {
+     "n": "Viande",
+     "p": 8.5
+    },
+    {
+     "n": "Poisson",
+     "p": 9.5
+    },
+    {
+     "n": "Dinde",
+     "p": 7.5
+    },
+    {
+     "n": "Tenders",
+     "p": 8
+    }
+   ]
+  },
+  {
+   "n": "Sandwichs",
+   "e": "🥖",
+   "items": [
+    {
+     "n": "Chawarma",
+     "p": 7.5
+    },
+    {
+     "n": "Kefta",
+     "p": 7.5
+    },
+    {
+     "n": "Hamburger",
+     "p": 7
+    },
+    {
+     "n": "Poulet",
+     "p": 7.5
+    },
+    {
+     "n": "Poulet pané",
+     "p": 8
+    },
+    {
+     "n": "Merguez",
+     "p": 7.5
+    },
+    {
+     "n": "Fallafels",
+     "p": 7.5
+    },
+    {
+     "n": "Foie",
+     "p": 8
+    },
+    {
+     "n": "Viande",
+     "p": 8.5
+    },
+    {
+     "n": "Poisson",
+     "p": 9.5
+    },
+    {
+     "n": "Dinde",
+     "p": 7.5
+    },
+    {
+     "n": "Tenders",
+     "p": 8
+    }
+   ]
+  },
+  {
+   "n": "Panini",
+   "e": "🥪",
+   "items": [
+    {
+     "n": "Kefta",
+     "p": 8
+    },
+    {
+     "n": "Poulet",
+     "p": 8
+    },
+    {
+     "n": "Merguez",
+     "p": 8
+    },
+    {
+     "n": "Tenders",
+     "p": 8.5
+    },
+    {
+     "n": "Fallafels",
+     "p": 8
+    },
+    {
+     "n": "Fish",
+     "p": 8
+    },
+    {
+     "n": "Pita",
+     "p": 8
+    },
+    {
+     "n": "Dinde",
+     "p": 8
+    },
+    {
+     "n": "Viande",
+     "p": 8.5
+    },
+    {
+     "n": "Mixte",
+     "p": 8.5
+    }
+   ]
+  },
+  {
+   "n": "Tacos",
+   "e": "🌮",
+   "items": [
+    {
+     "n": "Kefta",
+     "p": 9.5
+    },
+    {
+     "n": "Poulet",
+     "p": 9.5
+    },
+    {
+     "n": "Tenders",
+     "p": 9.5
+    },
+    {
+     "n": "Fallafels",
+     "p": 9.5
+    },
+    {
+     "n": "Dinde",
+     "p": 9.5
+    },
+    {
+     "n": "Viande",
+     "p": 9.5
+    },
+    {
+     "n": "Mixte",
+     "p": 10
+    }
+   ]
+  },
+  {
+   "n": "Kapsalon",
+   "e": "🥗",
+   "items": [
+    {
+     "n": "Poulet",
+     "p": 9.5
+    },
+    {
+     "n": "Fallafels",
+     "p": 9.5
+    },
+    {
+     "n": "Tenders",
+     "p": 9.5
+    },
+    {
+     "n": "Viande",
+     "p": 10
+    },
+    {
+     "n": "Hamburger",
+     "p": 9
+    },
+    {
+     "n": "Dinde",
+     "p": 9.5
+    },
+    {
+     "n": "Merguez",
+     "p": 9.5
+    },
+    {
+     "n": "Mixte",
+     "p": 10
+    },
+    {
+     "n": "Kebda",
+     "p": 9.5
+    },
+    {
+     "n": "Poisson",
+     "p": 10.5
+    }
+   ]
+  },
+  {
+   "n": "Menus",
+   "e": "🍽️",
+   "items": [
+    {
+     "n": "Bicky",
+     "p": 8.5
+    },
+    {
+     "n": "Pita",
+     "p": 9
+    },
+    {
+     "n": "Poulet",
+     "p": 9
+    },
+    {
+     "n": "Tenders",
+     "p": 9.5
+    },
+    {
+     "n": "Dinde",
+     "p": 9
+    },
+    {
+     "n": "Merguez",
+     "p": 9
+    },
+    {
+     "n": "Viande",
+     "p": 10
+    },
+    {
+     "n": "Mixte",
+     "p": 10
+    },
+    {
+     "n": "Hamburger",
+     "p": 8.5
+    },
+    {
+     "n": "Menu enfant",
+     "p": 8
+    }
+   ]
+  },
+  {
+   "n": "Bicky",
+   "e": "🍔",
+   "items": [
+    {
+     "n": "Hamburger",
+     "p": 5
+    },
+    {
+     "n": "Kefta",
+     "p": 5.5
+    },
+    {
+     "n": "Fish",
+     "p": 5.5
+    }
+   ]
+  },
+  {
+   "n": "Assiettes",
+   "e": "🍛",
+   "items": [
+    {
+     "n": "Poulet",
+     "p": 14
+    },
+    {
+     "n": "Merguez",
+     "p": 14
+    },
+    {
+     "n": "Falafels",
+     "p": 16
+    },
+    {
+     "n": "Fish",
+     "p": 16
+    },
+    {
+     "n": "Poulet pané",
+     "p": 16
+    },
+    {
+     "n": "Meze maison",
+     "p": 18
+    },
+    {
+     "n": "Hamburger",
+     "p": 12
+    },
+    {
+     "n": "Kefta",
+     "p": 14
+    },
+    {
+     "n": "Brochettes",
+     "p": 15.5
+    },
+    {
+     "n": "Foie",
+     "p": 15
+    },
+    {
+     "n": "Grillade maison",
+     "p": 18
+    },
+    {
+     "n": "Viande",
+     "p": 16
+    },
+    {
+     "n": "Mixte",
+     "p": 16
+    }
+   ]
+  },
+  {
+   "n": "Grillades",
+   "e": "🍖",
+   "items": [
+    {
+     "n": "Grillade (shawarma, poulet)",
+     "p": 15.5
+    },
+    {
+     "n": "Grillade maison",
+     "p": 17
+    },
+    {
+     "n": "Grillade du chef",
+     "p": 17.5
+    },
+    {
+     "n": "Grillade pacha",
+     "p": 17.5
+    }
+   ]
+  },
+  {
+   "n": "Salades",
+   "e": "🥬",
+   "items": [
+    {
+     "n": "Caprice",
+     "p": 6
+    },
+    {
+     "n": "Mixte",
+     "p": 6.5
+    },
+    {
+     "n": "Maison",
+     "p": 6.5
+    },
+    {
+     "n": "Poulet",
+     "p": 9.5
+    },
+    {
+     "n": "Viande au choix",
+     "p": 9.5
+    }
+   ]
+  },
+  {
+   "n": "Spécialités",
+   "e": "🍲",
+   "items": [
+    {
+     "n": "Tajine kefta",
+     "p": 10.5
+    },
+    {
+     "n": "Tajine poulet légumes",
+     "p": 11.5
+    },
+    {
+     "n": "Tajine poulet citron olives",
+     "p": 13
+    },
+    {
+     "n": "Tajine agneau pruneaux",
+     "p": 14
+    },
+    {
+     "n": "Couscous viande au choix",
+     "p": 11.5
+    }
+   ]
+  },
+  {
+   "n": "Frites & plus",
+   "e": "🍟",
+   "items": [
+    {
+     "n": "Frites petite",
+     "p": 3.5
+    },
+    {
+     "n": "Frites moyenne",
+     "p": 4
+    },
+    {
+     "n": "Frites grande",
+     "p": 4.5
+    },
+    {
+     "n": "Ailes de poulet",
+     "p": 4.5
+    },
+    {
+     "n": "Bouchettes viande",
+     "p": 6
+    },
+    {
+     "n": "Poulet croque",
+     "p": 3
+    },
+    {
+     "n": "Boulettes",
+     "p": 3
+    },
+    {
+     "n": "Fricadelles",
+     "p": 3
+    }
+   ]
+  },
+  {
+   "n": "Suppléments",
+   "e": "➕",
+   "items": [
+    {
+     "n": "Feta",
+     "p": 1
+    },
+    {
+     "n": "Kefta",
+     "p": 3.5
+    },
+    {
+     "n": "Merguez",
+     "p": 3.5
+    },
+    {
+     "n": "Extra sauce",
+     "p": 0.75
+    },
+    {
+     "n": "Cheddar",
+     "p": 1
+    },
+    {
+     "n": "Poulet",
+     "p": 3.5
+    },
+    {
+     "n": "Côte d'agneau",
+     "p": 5
+    }
+   ]
+  },
+  {
+   "n": "Sauces",
+   "e": "🫙",
+   "items": [
+    {
+     "n": "Mayonnaise",
+     "p": 0.75
+    },
+    {
+     "n": "Ketchup",
+     "p": 0.75
+    },
+    {
+     "n": "Andalouse",
+     "p": 0.75
+    },
+    {
+     "n": "Algérienne",
+     "p": 0.75
+    },
+    {
+     "n": "Samouraï",
+     "p": 0.75
+    },
+    {
+     "n": "Blanche",
+     "p": 0.75
+    },
+    {
+     "n": "Harissa",
+     "p": 0.75
+    },
+    {
+     "n": "Américaine",
+     "p": 0.75
+    },
+    {
+     "n": "Brazil",
+     "p": 0.75
+    },
+    {
+     "n": "Bicky",
+     "p": 0.75
+    },
+    {
+     "n": "Mammouth",
+     "p": 0.75
+    },
+    {
+     "n": "Tartare",
+     "p": 0.75
+    },
+    {
+     "n": "Cocktail",
+     "p": 0.75
+    },
+    {
+     "n": "Curry ketchup",
+     "p": 0.75
+    },
+    {
+     "n": "Sauce à l’ail",
+     "p": 0.75
+    },
+    {
+     "n": "Barbecue",
+     "p": 0.75
+    },
+    {
+     "n": "Moutarde",
+     "p": 0.75
+    },
+    {
+     "n": "Piquante",
+     "p": 0.75
+    },
+    {
+     "n": "Pili-pili",
+     "p": 0.75
+    },
+    {
+     "n": "Sweet chili",
+     "p": 0.75
+    },
+    {
+     "n": "Pita",
+     "p": 0.75
+    }
+   ]
+  },
+  {
+   "n": "Boissons",
+   "e": "🥤",
+   "items": [
+    {
+     "n": "Thé à la menthe 1 pers.",
+     "p": 2.5
+    },
+    {
+     "n": "Thé à la menthe 2 pers.",
+     "p": 4.5
+    },
+    {
+     "n": "Thé à la menthe 5 pers.",
+     "p": 8
+    },
+    {
+     "n": "Café noir",
+     "p": 2.5
+    },
+    {
+     "n": "Café au lait",
+     "p": 3
+    },
+    {
+     "n": "Redbull",
+     "p": 3
+    },
+    {
+     "n": "Freez",
+     "p": 3
+    },
+    {
+     "n": "Softs 0,33 L",
+     "p": 2
+    },
+    {
+     "n": "Caprisun",
+     "p": 1
+    }
+   ]
+  },
+  {
+   "n": "Desserts",
+   "e": "🍰",
+   "items": [
+    {
+     "n": "Dame blanche",
+     "p": 3.5
+    },
+    {
+     "n": "Pâtisserie marocaine",
+     "p": 3.5
+    },
+    {
+     "n": "Tiramisu maison",
+     "p": 3.5
+    }
+   ]
+  }
+ ]
+}
