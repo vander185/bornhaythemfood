@@ -592,6 +592,23 @@ body .idle h1{font-size:clamp(38px,6.4vw,52px);
 /* ====== Menus : même logo qu'à l'accueil ====== */
 .tlg .lgs.hfm{height:clamp(66px,10vh,104px);width:auto;border-radius:0;animation:pop .8s var(--e) backwards;
  filter:drop-shadow(0 2px 8px #000a) drop-shadow(0 0 12px #d4af3755)}
+
+/* ====== Pas de flash quand on coche un choix ======
+   La fenêtre est redessinée à chaque toucher : on ne rejoue les
+   animations d'entrée qu'à l'ouverture, pas à chaque sélection. */
+.mod.re,.mod.re .box,.mod.re .op{animation:none!important}
+.mod.re .op.on .opi::after{animation:none!important;opacity:0}
+.mod.re .op.on.nw .opi::after{opacity:1;animation:opSh 1.1s ease-out!important}
+.mod.re .op.nw{animation:opTap .28s cubic-bezier(.2,.9,.3,1.4)!important}
+@keyframes opTap{0%{transform:scale(.94)}100%{transform:none}}
+.mod.re .op .opi img{transition:none}
+.mod.re .op.on .opi img{transform:scale(1.08)}
+.mod.re .op.nw.on .opi img{animation:opZ .35s ease-out}
+@keyframes opZ{from{transform:scale(1)}to{transform:scale(1.08)}}
+@media(prefers-reduced-motion:reduce){.mod.re .op.nw,.mod.re .op.nw.on .opi img,.mod.re .op.on.nw .opi::after{animation:none!important}}
+
+/* changement d'étape : les nouveaux choix arrivent en cascade, sans rejouer la fenêtre */
+.mod.re.stp .op{animation:opIn .42s cubic-bezier(.2,.9,.3,1) both!important;animation-delay:calc(var(--oi,0)*28ms)!important}
 </style></head><body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="gd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f8e08e"/><stop offset=".5" stop-color="#d99a05"/><stop offset="1" stop-color="#a8710a"/></linearGradient></defs>
 <symbol id="hand" viewBox="0 0 100 120"><g fill="url(#gd)"><rect x="43" y="4" width="14" height="54" rx="7"/><rect x="28" y="16" width="13" height="46" rx="6.5"/><rect x="59" y="16" width="13" height="46" rx="6.5"/><path d="M27 72C13 64 8 50 10 40c1-6 9-6 11 0 2 8 6 14 11 18z"/><path d="M73 72c14-8 19-22 17-32-1-6-9-6-11 0-2 8-6 14-11 18z"/><path d="M26 52h48v26c0 22-10 34-24 40-14-6-24-18-24-40z"/></g><circle cx="50" cy="84" r="11" fill="#fff9e6"/><circle cx="50" cy="84" r="5.5" fill="url(#gd)"/></symbol>
 <symbol id="foot" viewBox="0 0 40 80"><g fill="url(#gd)"><path d="M6 28C2 42 4 62 12 72c6 8 18 6 20-6 2-12 0-26-4-36C24 20 10 18 6 28z"/><circle cx="11" cy="13" r="5.5"/><circle cx="21" cy="8" r="4"/><circle cx="29" cy="10" r="3.5"/><circle cx="35" cy="15" r="3"/><circle cx="38" cy="22" r="2.5"/></g></symbol></svg>
@@ -1067,11 +1084,11 @@ function sideInit(a){return;const sd=a.querySelector('.side');const w=sd.parentN
  sd.addEventListener('scroll',upd,{passive:true});['touchmove','wheel','pointerdown'].forEach(ev=>sd.addEventListener(ev,swMark,{passive:true}));
  upd();setTimeout(upd,120);
  if(!nudged&&!swiped&&cat==='home'){nudged=true;const x0=sd.scrollLeft,dr=L==='ar'?-1:1;setTimeout(()=>{if(swiped||$('.side')!==sd)return;sd.scrollTo({left:x0+90*dr,behavior:'smooth'});setTimeout(()=>{if(!swiped)sd.scrollTo({left:x0,behavior:'smooth'})},900)},1200)}}
-function sc(g,k){const v=lst(g)[k];if(g==='t')ed.t=v;else if(g==='b')ed.b=(!bReq(find(ed.id))&&ed.b===v)?'':v;else tog(g,v);drawSheet()}
+function sc(g,k){const v=lst(g)[k];ed._tap=g+':'+k;if(g==='t')ed.t=v;else if(g==='b')ed.b=(!bReq(find(ed.id))&&ed.b===v)?'':v;else tog(g,v);drawSheet()}
 function sq(d){ed.q=Math.max(1,ed.q+d);drawSheet()}
 const stepsOf=x=>{const o=oF(x);return['t','r','s','x','b'].filter(k=>o.includes(k)&&lst(k).length)};
 const stLbl=(x,k)=>k==='t'?t('mtype'):k==='r'?t('garn'):k==='s'?t('sauces'):k==='x'?t('supp'):(x.cat.n==='Menus'?t('mdrink'):bReq(x)?t('drink'):t('dropt')+eur(DP())+')');
-function sGo(d,abs){const n=stepsOf(find(ed.id)).length;ed.st=Math.max(0,Math.min(n-1,abs!=null?d:(ed.st||0)+d));drawSheet();const b=document.querySelector('.box');if(b)b.scrollTop=0}
+function sGo(d,abs){ed._tap='';window._stp=1;const n=stepsOf(find(ed.id)).length;ed.st=Math.max(0,Math.min(n-1,abs!=null?d:(ed.st||0)+d));drawSheet();const b=document.querySelector('.box');if(b)b.scrollTop=0}
 function drawSheet(){const x=find(ed.id),ex=EX(),bx=document.querySelector('.box'),st=bx?bx.scrollTop:0;
  const sts=stepsOf(x),n=sts.length,si=Math.min(ed.st||0,Math.max(0,n-1)),k=sts[si],last=si>=n-1;
  const g=(t,k,sel,pr)=>`<div class="grp"><h4>${t}</h4><div class="opg${k==='s'?' sm':''}">${lst(k).map((v,j)=>opTile(k,v,sel,j,pr?(ex[j]||{}).p||0:0)).join('')}</div></div>`;
@@ -1081,7 +1098,7 @@ function drawSheet(){const x=find(ed.id),ex=EX(),bx=document.querySelector('.box
  const nb=document.querySelector('.box');if(nb)nb.scrollTop=st;const sa=document.querySelector('.stp button.on'),sp=sa&&sa.parentNode;if(sp&&getComputedStyle(sp).direction==='ltr')sp.scrollLeft=sa.offsetLeft-(sp.clientWidth-sa.offsetWidth)/2}
 function sok(){const rc=rct(),l={id:ed.id,q:ed.q,s:lst('s').filter(v=>ed.s.includes(v)),r:lst('r').filter(v=>ed.r.includes(v)),x:lst('x').filter(v=>ed.x.includes(v)),t:ed.t||'',b:ed.b};if(ed.i>=0)cart.splice(ed.i,1);const ne=ed.i<0;put(l);ed=null;mod('');bump=l.id;hap();render();fly(rc);if(upOn)upsell();else if(ne)toast(l)}
 let taps=0,tt;function tap(){taps++;clearTimeout(tt);tt=setTimeout(()=>taps=0,2500);if(taps>=5){taps=0;pinAsk()}}
-const mod=h=>{const m=$('#m'),had=!!m.firstChild;m.innerHTML=h?`<div class="mod"><div class="box">${h}</div></div>`:'';if(h&&!had)m.firstChild.classList.add('ent')};
+const mod=h=>{const m=$('#m'),had=!!m.firstChild;m.innerHTML=h?`<div class="mod${had?' re':''}${had&&window._stp?' stp':''}"><div class="box">${h}</div></div>`:'';if(h&&!had)m.firstChild.classList.add('ent');window._stp=0};
 let mbd=false;
 document.addEventListener('pointerdown',e=>{mbd=!!(e.target.classList&&e.target.classList.contains('mod'))});
 document.addEventListener('click',e=>{const m=e.target;
@@ -1436,7 +1453,7 @@ const brandHtml=n=>{const p=String(n||"").trim().split(/\s+/),a=p.shift()||"";re
 const drkOf=v=>{const n=String(v).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');if(/menthe/.test(n))return DRK2[/5 ?pers/.test(n)?'the5':/2 ?pers/.test(n)?'the2':'the1'];if(/cafe/.test(n))return DRK2[/lait/.test(n)?'lait':'cafe'];if(/red ?bull/.test(n))return DRK2.redbull;if(/freez/.test(n))return DRK2.freez;if(/capri/.test(n))return DRK2.capri;if(/^softs?/.test(n))return DRK2.softs;if(/coca|cola/.test(n))return DRK[/zero/.test(n)?'Coca-Cola Zéro':'Coca-Cola'];if(/fanta/.test(n))return DRK[/citron|lemon/.test(n)?'Fanta Citron':'Fanta'];if(/sprite/.test(n))return DRK.Sprite;if(/schweppes/.test(n))return DRK[/agrum/.test(n)?'Schweppes Agrumes':'Schweppes Lemon'];if(/orangina/.test(n))return DRK.Orangina;if(/ice ?tea|lipton|the glace/.test(n))return DRK['Ice Tea'];if(/\beau\b|water|\bspa\b/.test(n))return DRK.Eau;return''};
 const OPK=v=>String(v).replace(/[’‘]/g,"'");
 function opTile(k,v,sel,j,pr){const n=OPK(v),dk=k==='b'?drkOf(v):'',sp=v===NOS||v===NOC,em=sp?'🚫':v===ALLC?'🥗':(OPE[n]||(k==='t'?(v===MTYPES[0]?'🌯':'🥖'):k==='s'?'🫙':k==='b'?'🥤':'🍽️')),p=!sp&&OPI[n],base=((S.hq&&S.hq.site)||'https://www.haythemfood.com').replace(/\/+$/,'');
- return `<button class="op ${sel.includes(v)?'on':''}" onclick="sc('${k}',${j})"><i class="opi${dk?' dk':''}"><em>${k==='s'&&!sp?sauceSvg(v):em}</em>${dk?`<img src="${dk}" alt="">`:p?`<img src="${p}" loading="lazy" alt="" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='${base}/${p}'}else this.remove()">`:''}</i>${k==='s'&&sauceTop(v)?'<b class="tp">★</b>':''}<span>${esc(ov(v))}</span>${pr?`<small>+${eur(pr)}</small>`:''}</button>`}
+ return `<button class="op ${sel.includes(v)?'on':''}${ed&&ed._tap===k+':'+j?' nw':''}" onclick="sc('${k}',${j})"><i class="opi${dk?' dk':''}"><em>${k==='s'&&!sp?sauceSvg(v):em}</em>${dk?`<img src="${dk}" alt="">`:p?`<img src="${p}" decoding="sync" alt="" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='${base}/${p}'}else this.remove()">`:''}</i>${k==='s'&&sauceTop(v)?'<b class="tp">★</b>':''}<span>${esc(ov(v))}</span>${pr?`<small>+${eur(pr)}</small>`:''}</button>`}
 /* RÉCEPTION DES COMMANDES (WhatsApp / Telegram / ntfy) */
 const NF=()=>S.nf||(S.nf={wa:{on:false,phone:'',key:''},tg:{on:false,token:'',chat:''},nt:{on:false,topic:''},q:[]}),NFL={wa:'WhatsApp',tg:'Telegram',nt:'ntfy'};
 const orderTxt=o=>`🧾 Commande N° ${o.n} · ${S.shop}\n${o.mode} · ${MN[o.m]} · ${o.paid?'PAYÉ ✅':'À PAYER À LA CAISSE 💶'}\n${o.ts}\n\n${o.lines.map(l=>`${l.q}× ${l.n}${l.d&&l.d.length?'\n   '+l.d.join(' · '):''}`).join('\n')}\n\nTotal : ${eur(o.total)}`;
