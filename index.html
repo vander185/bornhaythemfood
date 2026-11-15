@@ -1623,7 +1623,7 @@ async function hqSend(p,unpaid){const d=fbDay(),c=SCFG(),st=(n,f)=>f().catch(e=>
    if(ix<0)throw Error('Numéro indisponible');
    p.nn=c.start+ix;p.no=c.pre+String(p.nn).padStart(c.pad,'0')}
   catch(e){/* compteur partagé refusé : la commande part quand même en cuisine avec un numéro de la borne */
-   p.nn=900+(S.seq%100);p.no=String(p.nn);HQ().err1=String(e.message||e).slice(0,80)}
+   p.nn=900+(S.seq++%100);p.no=String(p.nn);HQ().err1=String(e.message||e).slice(0,80)}
   save()}
  if(!p.sent){await st('commande',()=>fbFetch('/orders.json',{method:'POST',body:JSON.stringify({no:p.no,nn:p.nn,off:0,mode:p.mode,pay:p.pay+(unpaid?' · à encaisser':''),w:'Dès que possible',g:'',nom:p.nom||'',t:p.t,st:0,l:p.l})}));p.sent=1;save()}
  return{no:p.nn,lbl:p.no}}
