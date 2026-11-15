@@ -720,6 +720,26 @@ body .top::before{top:max(4px,env(safe-area-inset-top))}
 body .top::after{bottom:4px}
 /* Fond bordeaux du badge « Halal Food » entre les 2 cordes d'or */
 body .top{background:radial-gradient(70% 140% at 50% 50%,#7a1b2c 0%,#5a1020 45%,#3a0814 80%,#2a050e 100%)!important;box-shadow:inset 0 10px 18px -8px #000c,inset 0 -10px 18px -8px #000c!important}
+/* En-tête v2 : bande bordeaux centrée entre 2 cordes d'or */
+body .top{--rp:18px;align-items:center!important;padding:calc(var(--rp) + 12px) 18px!important;
+ background:
+  radial-gradient(38% 120% at 50% 50%,#d9a44138 0%,#d9a44110 45%,#0000 70%),
+  repeating-linear-gradient(115deg,#ffffff06 0 2px,#0000 2px 9px),
+  radial-gradient(75% 160% at 50% 50%,#8a2234 0%,#6a1526 38%,#470a18 72%,#2e0610 100%)!important;
+ box-shadow:inset 0 14px 16px -10px #000d,inset 0 -14px 16px -10px #000d,0 6px 18px #0009!important}
+body .top::before{top:0!important}
+body .top::after{bottom:0!important}
+body .top::before,body .top::after{height:var(--rp)!important}
+body .top>.tl,body .top>.tr,body .top>.tlg{align-self:center;display:flex;align-items:center}
+body .top .tlg{justify-content:center}
+body .top .tlg img{display:block;filter:drop-shadow(0 4px 8px #000b) drop-shadow(0 0 14px #f3cf6366)}
+body .top .btn.g{background:linear-gradient(180deg,#5a1222 0%,#33070f 100%)!important;color:#f9e29c!important;border:1.5px solid #d4af37!important;
+ box-shadow:0 4px 12px #000a,inset 0 1px 0 #ffffff26,0 0 0 3px #d4af3722!important;min-height:52px;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:0 20px!important;font-weight:800;letter-spacing:.02em}
+body .top .btn.g:active{transform:scale(.95)}
+body .top .btn.g::after{background:linear-gradient(105deg,transparent 40%,#f9e29c55 50%,transparent 60%) no-repeat!important;background-size:250% 100%!important}
+body .top .lgb{padding:0 14px!important}
+body .top .lgb span{color:#f9e29c}
+body .top h2{color:#f9e29c!important;font-family:'Playfair Display',Georgia,serif;text-shadow:0 2px 4px #000a}
 </style></head><body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="gd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f8e08e"/><stop offset=".5" stop-color="#d99a05"/><stop offset="1" stop-color="#a8710a"/></linearGradient></defs>
 <symbol id="hand" viewBox="0 0 100 120"><g fill="url(#gd)"><rect x="43" y="4" width="14" height="54" rx="7"/><rect x="28" y="16" width="13" height="46" rx="6.5"/><rect x="59" y="16" width="13" height="46" rx="6.5"/><path d="M27 72C13 64 8 50 10 40c1-6 9-6 11 0 2 8 6 14 11 18z"/><path d="M73 72c14-8 19-22 17-32-1-6-9-6-11 0-2 8-6 14-11 18z"/><path d="M26 52h48v26c0 22-10 34-24 40-14-6-24-18-24-40z"/></g><circle cx="50" cy="84" r="11" fill="#fff9e6"/><circle cx="50" cy="84" r="5.5" fill="url(#gd)"/></symbol>
 <symbol id="foot" viewBox="0 0 40 80"><g fill="url(#gd)"><path d="M6 28C2 42 4 62 12 72c6 8 18 6 20-6 2-12 0-26-4-36C24 20 10 18 6 28z"/><circle cx="11" cy="13" r="5.5"/><circle cx="21" cy="8" r="4"/><circle cx="29" cy="10" r="3.5"/><circle cx="35" cy="15" r="3"/><circle cx="38" cy="22" r="2.5"/></g></symbol></svg>
