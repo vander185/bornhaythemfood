@@ -887,7 +887,7 @@ const DPA2={"Poulet":"photos/assiettes-poulet-d71885ba.webp","Merguez":"photos/a
 const _px=t=>{const o={};for(const k in t)o[_nk(k)]=t[k];return o};
 const PX={'Assiettes':_px(DPA2),'Grillades':_px(DPG2),'Salades':_px(DPSAL),'Spécialités':_px(DPSPE),'Suppléments':_px(DPSUP),'Desserts':_px(DPDES)};
 const pxOf=(n,cn)=>{const t=PX[cn];if(!t)return '';return t[_nk(n)]||t[_nk(String(n).replace(/\s*\(.*\)\s*$/,''))]||'';};
-const IM=(i,c)=>i.img||(c&&c.n==='Sauces'&&typeof OPI!=='undefined'&&OPI[OPK(i.n)]?OPI[OPK(i.n)]:'')||(c&&(c.n==='Dürüms'?DPH[i.n]:c.n==='Sandwichs'?(DPS[i.n]||DPH[i.n]):c.n==='Panini'?DPP[i.n]:c.n==='Tacos'?DPT[i.n]:c.n==='Kapsalon'?DPK[i.n]:c.n==='Menus'?DPM[i.n]:c.n==='Bicky'?DPB[i.n]:c.n==='Assiettes'?(DPA[i.n]||pxOf(i.n,'Assiettes')):c.n==='Grillades'?(DPG[i.n]||pxOf(i.n,'Grillades')):PX[c.n]?pxOf(i.n,c.n):c.n==='Boissons'?drkOf(i.n):/^Frites/.test(c.n)?frOf(i.n):''))||'';
+const IM=(i,c)=>(window._sph&&window._sph[i.id])||i.img||(c&&c.n==='Sauces'&&typeof OPI!=='undefined'&&OPI[OPK(i.n)]?OPI[OPK(i.n)]:'')||(c&&(c.n==='Dürüms'?DPH[i.n]:c.n==='Sandwichs'?(DPS[i.n]||DPH[i.n]):c.n==='Panini'?DPP[i.n]:c.n==='Tacos'?DPT[i.n]:c.n==='Kapsalon'?DPK[i.n]:c.n==='Menus'?DPM[i.n]:c.n==='Bicky'?DPB[i.n]:c.n==='Assiettes'?(DPA[i.n]||pxOf(i.n,'Assiettes')):c.n==='Grillades'?(DPG[i.n]||pxOf(i.n,'Grillades')):PX[c.n]?pxOf(i.n,c.n):c.n==='Boissons'?drkOf(i.n):/^Frites/.test(c.n)?frOf(i.n):''))||'';
 const RAW=`Dürüms|🌯|Chawarma 7.5;Kefta 7.5;Hamburger 7;Poulet 7.5;Poulet pané 8;Merguez 7.5;Fallafels 7.5;Foie 8;Viande 8.5;Poisson 9.5;Dinde 7.5;Tenders 8
 Sandwichs|🥖|Chawarma 7.5;Kefta 7.5;Hamburger 7;Poulet 7.5;Poulet pané 8;Merguez 7.5;Fallafels 7.5;Foie 8;Viande 8.5;Poisson 9.5;Dinde 7.5;Tenders 8
 Panini|🥪|Kefta 8;Poulet 8;Merguez 8;Tenders 8.5;Fallafels 8;Fish 8;Pita 8;Dinde 8;Viande 8.5;Mixte 8.5
@@ -1014,7 +1014,45 @@ let _u=0;const uid=p=>p+Date.now().toString(36)+(_u++);
 function def(){return{shop:'Haythem Food',pin:'1234',seq:1,orders:[],
 pay:{card:true,cash:true,qr:true,provider:'Worldline',terminal:'',demo:true,holder:'Haythem Food',iban:'BE00 0000 0000 0000',merchant:'',qrTpl:'https://payconiq.com/pay/{merchant}?amount={amount}&ref={ref}'},
 cats:RAW.split('\n').map(l=>{const[n,e,it]=l.split('|');return{id:uid('c'),n,e,items:it.split(';').map(s=>{const m=s.match(/^(.*) ([\d.]+)$/);return{id:uid('i'),n:m[1],p:+m[2],img:''}})}})}}
-let S;try{S=JSON.parse(localStorage.getItem('hf')||'null')}catch(e){}S=S||def();norm();
+function sha256(str) {
+  const K = [], H = [], fr = x => ((x - Math.floor(x)) * 4294967296) | 0;
+  for (let n = 2, i = 0; i < 64; n++) {
+    let pr = true;
+    for (let d = 2; d * d <= n; d++) if (n % d === 0) { pr = false; break; }
+    if (pr) { if (i < 8) H[i] = fr(Math.pow(n, .5)); K[i++] = fr(Math.pow(n, 1 / 3)); }
+  }
+  const b = [...new TextEncoder().encode(str)], l = b.length * 8, r = (x, n) => (x >>> n) | (x << (32 - n)), w = [];
+  b.push(128);
+  while (b.length % 64 !== 56) b.push(0);
+  for (let j = 7; j >= 0; j--) b.push(j > 3 ? 0 : (l >>> (j * 8)) & 255);
+  for (let o = 0; o < b.length; o += 64) {
+    for (let j = 0; j < 16; j++) w[j] = (b[o + j * 4] << 24) | (b[o + j * 4 + 1] << 16) | (b[o + j * 4 + 2] << 8) | b[o + j * 4 + 3];
+    for (let j = 16; j < 64; j++) {
+      const x = w[j - 15], y = w[j - 2];
+      w[j] = (w[j - 16] + (r(x, 7) ^ r(x, 18) ^ (x >>> 3)) + w[j - 7] + (r(y, 17) ^ r(y, 19) ^ (y >>> 10))) | 0;
+    }
+    let [a, c, d, e, f, g, h, k] = H;
+    for (let j = 0; j < 64; j++) {
+      const t1 = (k + (r(f, 6) ^ r(f, 11) ^ r(f, 25)) + ((f & g) ^ (~f & h)) + K[j] + w[j]) | 0;
+      const t2 = ((r(a, 2) ^ r(a, 13) ^ r(a, 22)) + ((a & c) ^ (a & d) ^ (c & d))) | 0;
+      k = h; h = g; g = f; f = (e + t1) | 0; e = d; d = c; c = a; a = (t1 + t2) | 0;
+    }
+    [a, c, d, e, f, g, h, k].forEach((v, j) => H[j] = (H[j] + v) | 0);
+  }
+  return H.map(x => (x >>> 0).toString(16).padStart(8, '0')).join('');
+}
+
+/* Code gestionnaire : seule son empreinte est gardée, jamais le code lui-même */
+function pinH(p){return sha256('hfb|'+String(p).trim())}
+function pinEq(v){return !!S.pinh&&pinH(v)===S.pinh}
+function pinMig(){if(S&&S.pin!=null){S.pinh=pinH(S.pin);S.pinDef=String(S.pin)==='1234';delete S.pin;try{localStorage.setItem('hf',JSON.stringify(S))}catch(e){}}}
+function forcePin(){mod(`<div class="nocl"><h3>Choisissez votre code</h3><p class="note">Le code d’origine <b>1234</b> est connu de tout le monde. Choisissez le vôtre maintenant : il protège la gestion, les prix et le compte bancaire.</p><label class="fld">Nouveau code (4 à 8 chiffres)<input id="fp1" type="password" inputmode="numeric" autocomplete="new-password"></label><label class="fld">Encore une fois<input id="fp2" type="password" inputmode="numeric" autocomplete="new-password" onkeydown="if(event.key==='Enter')fpOk()"></label><p class="note" id="fp_msg" style="color:var(--bad)"></p><button class="btn" style="width:100%" onclick="fpOk()">Enregistrer mon code</button></div>`);const i=$('#fp1');i&&i.focus()}
+function fpOk(){const a=$('#fp1').value.trim(),b=$('#fp2').value.trim(),m=t=>$('#fp_msg').textContent=t;
+ if(!/^\d{4,8}$/.test(a))return m('Le code doit contenir 4 à 8 chiffres.');
+ if(a==='1234'||/^(\d)\1+$/.test(a))return m('Choisissez un code moins facile à deviner.');
+ if(a!==b)return m('Les deux codes sont différents.');
+ S.pinh=pinH(a);S.pinDef=false;save();mod('')}
+let S;try{S=JSON.parse(localStorage.getItem('hf')||'null')}catch(e){}S=S||def();norm();pinMig();
 const save=()=>{try{localStorage.setItem('hf',JSON.stringify(S))}catch(e){}};
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const eur=n=>n.toFixed(2).replace('.',',')+' €';
@@ -1107,7 +1145,7 @@ function render0(){applyTheme();
  const tiles=S.cats.filter(x=>x.home===undefined?D.includes(x.n):x.home);
  const P=promoNow(tiles),sg=topSug();
  const prod=(i,k)=>{const o=oF({n:i.n,cat:k});return `<button class="card" data-id="${i.id}" onclick="add('${i.id}')">${qn(i.id)?`<span class="q"><i onclick="event.stopPropagation();dec('${i.id}')">−</i>${qn(i.id)}</span>`:''}${ph(i,k).replace(/<\/div>$/,'<i class="pl">+</i>'+bdg(i,k)+'</div>')}<div class="i"><b>${esc(i.n)}</b><span class="pr">${o.includes('x')?`<small class="note">${t('from')}</small>`:''}${eur(i.p)}</span>${o?'<span class="note">'+t('cust')+'</span>':''}${cardExtra(i,k)}</div></button>`};
- const body=home?`<h1 class="f">${t('home')}</h1><h3 class="sub">${t('disc')}</h3><div class="tiles">${tiles.map(x=>`<button class="tile" onclick="cat='${x.id}';render()"><span>${esc(cn(x))}</span><b>${ICO(x)}</b></button>`).join('')}</div><h3 class="sub">${t('news')}</h3>${promoHtml(tiles)}<h3 class="sub">${t('sugg')}</h3><div class="row2">${sg.map(i=>prod(i,i.cat)).join('')}</div>`:`<h1 class="f">${ICO(c)} ${esc(cn(c))}</h1><div class="grid${c.n==='Sauces'?' gs':''}">${popItems(c).map(i=>prod(i,c)).join('')}</div>`;
+ const body=home?`<h1 class="f">${t('home')}</h1><h3 class="sub">${t('disc')}</h3><div class="tiles">${tiles.map(x=>`<button class="tile" onclick="cat='${x.id}';render()"><span>${esc(cn(x))}</span><b>${ICO(x)}</b></button>`).join('')}</div><h3 class="sub">${t('news')}</h3>${promoHtml(tiles)}<h3 class="sub">${t('sugg')}</h3><div class="row2">${sg.map(i=>prod(i,i.cat)).join('')}</div>`:`<h1 class="f">${ICO(c)} ${esc(cn(c))}</h1><div class="grid${c.n==='Sauces'?' gs':''}">${popItems(c).filter(i=>!(window._sout||{})[i.id]).map(i=>prod(i,c)).join('')}</div>`;
  a.innerHTML=`<div class="top"><div class="tl"><button class="btn g s" onclick="if(cat!=='home'){cat='home';render()}else go('idle')">${t('back')}</button><h2>${esc(S.shop)} · ${t(MODEK[mode]||'here')}</h2></div><div class="tlg"><img class="lgs hfm" src="${LOGO_HF}" alt="Haythem Food halal"></div><div class="tr"><button class="btn g s lgb" onclick="langMenu()" aria-label="Language">${FL(L)}<span>▾</span></button></div></div>
  <div class="main"><div class="shop" style="--wm:url(${LG()})"><div class="sidew"><button class="sa s" onclick="sideGo(-1)"><i>›</i></button><div class="side"><button class="si ${home?'on':''}" onclick="cat='home';render()"><b>🏠</b>${t('home')}</button>${S.cats.map(x=>`<button class="si ${!home&&x.id===c.id?'on':''}" onclick="cat='${x.id}';render()"><b>${ICO(x)}</b>${esc(cn(x))}${cq(x)?`<em class="bd ${bump&&(find(bump)||{cat:{}}).cat.id===x.id?'pp':''}">${cq(x)}</em>`:''}</button>`).join('')}</div><button class="sa e" onclick="sideGo(1)"><i>›</i></button>${swiped?'':`<div class="swh"><span class="hd">👆</span><span>${t('swipe')}</span><span class="ar"><i>›</i><i>›</i><i>›</i></span></div>`}</div><div class="ct">${(BODY=body,PROD=prod,'')}${S.srch===true?`<div class="srw"><input id="sq" type="text" enterkeyhint="search" autocomplete="off" placeholder="${t('srch')}" value="${esc(SQ)}" oninput="srch(this.value)" onkeydown="if(event.key==='Enter')this.blur()"><button class="sx" onclick="SQ='';$('#sq').value='';srch('')" aria-label="clear">✕</button></div>`:''}<div id="cb" class="${SQ&&S.srch===true?'sr':''}">${SQ&&S.srch===true?sres(SQ):body}</div></div></div>
  <div class="cart ${cartOpen?'on':''}" id="cart">${cartHTML()}</div></div>
@@ -1158,7 +1196,7 @@ let mbd=false;
 document.addEventListener('pointerdown',e=>{mbd=!!(e.target.classList&&e.target.classList.contains('mod'))});
 document.addEventListener('click',e=>{const m=e.target;
  if(!mbd||!m.classList||!m.classList.contains('mod'))return;mbd=false;
- if(m.id==='lk'||m.id==='iw')return;const b=[...m.querySelectorAll('.box .btn.g')].pop();if(b)b.click()});
+ if(m.id==='lk'||m.id==='iw'||m.querySelector('.nocl'))return;const b=[...m.querySelectorAll('.box .btn.g')].pop();if(b)b.click()});
 function payMenu(){const p=S.pay;
  mod(`<div class="mh"><div><h3 id="ptot">${t('payt')} · ${eur(total())}</h3></div><button class="btn g x" onclick="payBack()">✕</button></div>
  ${S.tip&&S.tip.on?tipBox():''}
@@ -1184,7 +1222,7 @@ function done0(m,R){const o={n:(R&&+R.no)||S.seq++,hid:R?R.id:'',hq:R&&R.no?1:0,
 function pinAsk(){mod(`<h3>Code gestionnaire</h3><input id="pin" type="password" inputmode="numeric" autocomplete="off" autofocus placeholder="Code PIN" onkeydown="if(event.key==='Enter')pinOk()"><button class="btn" onclick="pinOk()">Entrer</button><button class="btn g" onclick="mod('')">Annuler</button>`);const w=$('#m .mod');w&&w.classList.add('pinw');const i=$('#pin');i&&i.focus();setTimeout(()=>{const x=$('#pin');x&&x.focus()},60)}
 let fails=0,lockT=0;
 function pinOk(){const p=$('#pin');if(Date.now()<lockT){p.value='';p.placeholder='Patientez 1 minute';return}
- if(p.value===S.pin){fails=0;mod('');ecat=S.cats[0].id;tab='menu';go('admin')}else{if(++fails>=3){fails=0;lockT=Date.now()+60000}p.style.borderColor='var(--bad)';p.value='';p.placeholder='Code incorrect'}}
+ if(pinEq(p.value)){fails=0;mod('');ecat=S.cats[0].id;tab='menu';go('admin');if(S.pinDef)forcePin()}else{if(++fails>=3){fails=0;lockT=Date.now()+60000}p.style.borderColor='var(--bad)';p.value='';p.placeholder='Code incorrect'}}
 
 /* ===== V19 ===== */
 Object.assign(TR,{
@@ -1304,7 +1342,7 @@ function aBank(){const b=S.bank,m=(b.iban||'').replace(/\s/g,''),mk=m?m.slice(0,
  <label class="fld">Confirmez avec le code PIN<input id="bk_p" type="password" inputmode="numeric"></label><button class="btn" onclick="saveBank()">Enregistrer le compte</button><p id="bk_msg" class="note"></p></div>
  <p class="note">Le compte qui reçoit les versements doit aussi être déclaré chez Payconiq et Worldline. Ici, il sert de référence et d’identifiant pour le QR code.</p>`}
 function saveBank(){const g=i=>$('#'+i).value.trim(),msg=t=>$('#bk_msg').textContent=t;
- if(g('bk_p')!==S.pin)return msg('Code PIN incorrect.');
+ if(!pinEq(g('bk_p')))return msg('Code PIN incorrect.');
  if(g('bk_i')&&!ibanOk(g('bk_i')))return msg('IBAN invalide : vérifiez les chiffres.');
  S.bank={holder:g('bk_h'),iban:g('bk_i').replace(/\s/g,'').toUpperCase().replace(/(.{4})/g,'$1 ').trim(),bic:g('bk_b').toUpperCase(),bank:g('bk_n')};S.pay.merchant=g('bk_m');S.pay.qrTpl=g('bk_q')||def().pay.qrTpl;save();admin();$('#bk_msg').textContent='Compte enregistré.'}
 const ol=(k,l)=>`<label class="fld">${l} (un par ligne)<textarea onchange="S.opt.${k}=this.value.split('\\n').map(x=>x.trim()).filter(Boolean);save()">${esc(S.opt[k].join('\n'))}</textarea></label>`;
@@ -1314,7 +1352,7 @@ function aOrd(){const t=S.orders.reduce((s,o)=>s+o.total,0);
  return `<div class="sec"><b>${S.orders.length} commandes · ${eur(t)}</b>${aTop()}${S.orders.map(o=>`<div class="ln"><span>N°${o.n}${o.kn&&o.kn!==o.n?' (cuisine N°'+o.kn+')':''}${o.hid&&!o.hq?' ⚠ non transmise':''} · ${o.ts}<br><span class="note">${o.mode} · ${MN[o.m]} · ${o.lines.map(l=>l.q+'× '+esc(l.n)+(l.d&&l.d.length?' ('+esc(l.d.join(' · '))+')':'')).join(', ')}</span></span><b>${eur(o.total)}</b><button class="btn g s" onclick="waOpen(${o.n})">WhatsApp</button></div>`).join('')||'<p class="note">Aucune commande pour le moment.</p>'}<button class="btn d s" onclick="if(confirm('Vider l’historique ?')){S.orders=[];save();admin()}">Vider l’historique</button></div>`}
 function aSet(){return `<div class="sec"><h3>Réglages</h3><label class="tg"><input type="checkbox" ${S.srch===true?'checked':''} onchange="S.srch=this.checked;SQ='';save()">Afficher le champ « Rechercher un plat »</label><label class="fld">Nom du commerce<input value="${esc(S.shop)}" onchange="S.shop=this.value;save()"></label><h3>Logo</h3><img class="lgo" style="height:120px;align-self:center" src="${LG()}" alt=""><label class="fld">Changer le logo<input type="file" accept="image/*" onchange="logoUp(this)"></label><button class="btn g s" onclick="S.logo='';save();admin()">Rétablir le logo d’origine</button>
  <h3>Retour automatique</h3><label class="fld">Retour à l’accueil après inactivité (secondes · 0 = désactivé)<input inputmode="numeric" value="${S.idleSec!==undefined&&S.idleSec!==''?S.idleSec:''}" placeholder="vide = 90 s sur borne/tablette, désactivé sur GSM" onchange="S.idleSec=this.value.trim()===''?'':Math.max(0,parseInt(this.value)||0);save()"></label>
-  ${aUpd()}<h3>Sécurité · code PIN</h3><label class="fld">Ancien code PIN<input id="pn0" type="password" inputmode="numeric"></label><label class="fld">Nouveau code PIN (4 à 8 chiffres)<input id="pn1" type="password" inputmode="numeric"></label><label class="fld">Confirmer le nouveau code<input id="pn2" type="password" inputmode="numeric"></label><button class="btn" onclick="changePin()">Changer le code PIN</button><p id="pn_msg" class="note"></p>${aV18()}<h3>Bandeau « Quoi de neuf ? »</h3><label class="tg"><input type="checkbox" ${S.promoAuto!==false?'checked':''} onchange="S.promoAuto=this.checked;save()">Changer automatiquement toutes les 30 minutes (plats de la carte)</label><p class="note">Désactivé : seul le bandeau ci-dessous est affiché.</p><label class="fld">Titre<input value="${esc((S.promo||{}).t||'')}" onchange="pr('t',this.value)"></label><label class="fld">Sous-titre<input value="${esc((S.promo||{}).s||'')}" onchange="pr('s',this.value)"></label><label class="fld">Photo du bandeau<input type="file" accept="image/*" onchange="promoPhoto(this)"></label><button class="btn d" onclick="if(confirm('Rétablir le menu et les réglages d’origine ?')){{const p=S.pin,b=S.bank,l=S.logo,r=S.printer,tm=S.terms,tp=S.pay.term,ti=S.tip;S=def();norm();S.pin=p;S.bank=b;S.logo=l;S.printer=r;S.terms=tm;S.pay.term=tp;S.tip=ti}save();cat=ecat=S.cats[0].id;admin()}">Rétablir les réglages d’origine</button><p class="note">Code PIN par défaut : 1234. Les données restent sur cet appareil.</p></div>`}
+  ${aUpd()}<h3>Sécurité · code PIN</h3><label class="fld">Ancien code PIN<input id="pn0" type="password" inputmode="numeric"></label><label class="fld">Nouveau code PIN (4 à 8 chiffres)<input id="pn1" type="password" inputmode="numeric"></label><label class="fld">Confirmer le nouveau code<input id="pn2" type="password" inputmode="numeric"></label><button class="btn" onclick="changePin()">Changer le code PIN</button><p id="pn_msg" class="note"></p>${aV18()}<h3>Bandeau « Quoi de neuf ? »</h3><label class="tg"><input type="checkbox" ${S.promoAuto!==false?'checked':''} onchange="S.promoAuto=this.checked;save()">Changer automatiquement toutes les 30 minutes (plats de la carte)</label><p class="note">Désactivé : seul le bandeau ci-dessous est affiché.</p><label class="fld">Titre<input value="${esc((S.promo||{}).t||'')}" onchange="pr('t',this.value)"></label><label class="fld">Sous-titre<input value="${esc((S.promo||{}).s||'')}" onchange="pr('s',this.value)"></label><label class="fld">Photo du bandeau<input type="file" accept="image/*" onchange="promoPhoto(this)"></label><button class="btn d" onclick="if(confirm('Rétablir le menu et les réglages d’origine ?')){{const p=S.pinh,pd=S.pinDef,b=S.bank,l=S.logo,r=S.printer,tm=S.terms,tp=S.pay.term,ti=S.tip;S=def();norm();delete S.pin;S.pinh=p;S.pinDef=pd;S.bank=b;S.logo=l;S.printer=r;S.terms=tm;S.pay.term=tp;S.tip=ti}save();cat=ecat=S.cats[0].id;admin()}">Rétablir les réglages d’origine</button><p class="note">Code PIN par défaut : 1234. Les données restent sur cet appareil.</p></div>`}
 function pr(k,v){S.promo=S.promo||{t:'',s:'',img:''};S.promo[k]=v;save()}
 function promoPhoto(el){const f=el.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const s=Math.min(1,900/im.width),cv=document.createElement('canvas');cv.width=im.width*s;cv.height=im.height*s;cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);pr('img',cv.toDataURL('image/jpeg',.75));alert('Photo du bandeau enregistrée')};im.src=r.result};r.readAsDataURL(f)}
 /* IMPRIMANTE */
@@ -1396,11 +1434,11 @@ function aTip(){const T=S.tip;return `<div class="sec"><h3>Dons & pourboires</h3
  <label class="fld">Montants proposés en € (séparés par un point-virgule)<input value="${T.amounts.join('; ')}" onchange="tp2('amounts',this.value.split(';').map(x=>parseFloat(x.replace(',','.'))).filter(x=>x>0))"></label>
  <button class="btn g" onclick="tipModal(0)">Voir le QR code</button></div>`}
 function changePin(){const g=i=>$('#'+i).value,m=t=>$('#pn_msg').textContent=t;
- if(g('pn0')!==S.pin)return m('Ancien code incorrect.');
+ if(!pinEq(g('pn0')))return m('Ancien code incorrect.');
  if(!/^\d{4,8}$/.test(g('pn1')))return m('Le nouveau code doit contenir 4 à 8 chiffres.');
  if(g('pn1')!==g('pn2'))return m('Les deux nouveaux codes sont différents.');
  if(g('pn1')===g('pn0'))return m('Choisissez un code différent de l’ancien.');
- S.pin=g('pn1');save();['pn0','pn1','pn2'].forEach(i=>$('#'+i).value='');m('Code PIN modifié. Il protège la gestion et le compte bancaire.')}
+ S.pinh=pinH(g('pn1'));S.pinDef=false;save();['pn0','pn1','pn2'].forEach(i=>$('#'+i).value='');m('Code PIN modifié. Il protège la gestion et le compte bancaire.')}
 function logoUp(el){const f=el.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,500/Math.max(im.width,im.height)),cv=document.createElement('canvas');cv.width=im.width*k;cv.height=im.height*k;cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);S.logo=cv.toDataURL(f.type==='image/png'?'image/png':'image/jpeg',.85);save();admin()};im.src=r.result};r.readAsDataURL(f)}
 /* VENTE ADDITIONNELLE : boissons & desserts */
 let upDone=false,upOn=false,upNeed=[],upT=0,upSc={x:[],y:[]};
@@ -1429,7 +1467,7 @@ function kAsk(){if(lockOn)return;lockOn=true;const d=document.createElement('div
 function kClose(){lockOn=false;const d=$('#lk');d&&d.remove()}
 function kBack(){goFS();setTimeout(()=>{if(inFS())kClose();else{noFS=true;kClose()}},700)}
 function kOk(){const p=$('#lkp');if(Date.now()<lockT){p.value='';p.placeholder=t('wt');return}
- if(p.value===S.pin){fails=0;kClose();kExit()}else{if(++fails>=3){fails=0;lockT=Date.now()+60000}p.style.borderColor='var(--bad)';p.value='';p.placeholder=t('bad')}}
+ if(pinEq(p.value)){fails=0;kClose();kExit()}else{if(++fails>=3){fails=0;lockT=Date.now()+60000}p.style.borderColor='var(--bad)';p.value='';p.placeholder=t('bad')}}
 function kExit(){paused=true;try{if(document.fullscreenElement)document.exitFullscreen()}catch(e){}}
 function kSet(on){S.kiosk=on;paused=false;noFS=false;save();if(!on){kClose();try{if(document.fullscreenElement)document.exitFullscreen()}catch(e){}}else armed=false}
 function kCheck(){if(inFS()){armed=true;needFS=false}if(kOn()&&!inFS()&&!lockOn)kAsk()}
@@ -1442,18 +1480,46 @@ setInterval(kCheck,1500);
 document.addEventListener('contextmenu',e=>{if(kOn())e.preventDefault()});
 try{history.pushState(null,'',location.href);addEventListener('popstate',()=>{try{history.pushState(null,'',location.href)}catch(e){}})}catch(e){}
 /* ===== LIAISON AVEC haythemfood.com : écran cuisine + écran clients ===== */
-const HQ=()=>S.hq||(S.hq={on:true,url:'https://nfdcrufjjqltibqvyprz.supabase.co',key:'sb_publishable_u1phNY0QV-rekvw_6nkoWg_X1lSFGtj',site:'https://www.haythemfood.com',q:[]});
+const HQ=()=>{const h=S.hq||(S.hq={on:true,site:'https://www.haythemfood.com',q:[]});if(h.db==null)h.db='https://haythemfood-2f2e9-default-rtdb.europe-west1.firebasedatabase.app';if(h.sync==null)h.sync=true;if(!h.q)h.q=[];return h};
 async function hqCall(fn,body,ms){const H=HQ(),c=new AbortController(),tm=setTimeout(()=>c.abort(),ms||7000);
  try{const r=await fetch(H.url.replace(/\/+$/,'')+'/rest/v1/rpc/'+fn,{method:'POST',headers:{'Content-Type':'application/json',apikey:H.key},body:JSON.stringify(body),signal:c.signal});
   const tx=await r.text();let j=null;try{j=JSON.parse(tx)}catch(e){}
   if(!r.ok)throw Error((j&&(j.message||j.hint))||('HTTP '+r.status));return j}finally{clearTimeout(tm)}}
 function hqBuild(m){const now=Date.now();
  return{id:now.toString(36)+Math.random().toString(36).slice(2,6),no:0,t:now,u:now,st:'new',mode:mode,pay:m==='cash'?'Espèces':(MN[m]||m)+' · borne',nom:'',tot:eur(total()),
-  l:[...cart.map(l=>({q:l.q,n:full(find(l.id)),d:desc(l)})),...(fDisc()>0?[{q:1,n:'🎁 '+t('form'),d:['-'+eur(fDisc())]}]:[]),...(tipAdd>0?[{q:1,n:'❤ '+t('tipl'),d:[eur(tipAdd)]}]:[])]}}
-async function hqSend(p,unpaid){const r=await hqCall('create_order',{p_order:p});
- if(!r||!r.no)throw Error('Réponse invalide du serveur');
- hqCall('update_order_pay',{p_id:p.id,p_pay:p.pay,p_unpaid:unpaid?1:0}).catch(()=>{});
- return{no:+r.no}}
+  l:[...cart.map(l=>({q:l.q,n:full(find(l.id)),d:desc(l),p:unit(l)*l.q})),...(fDisc()>0?[{q:1,n:'🎁 '+t('form'),d:['-'+eur(fDisc())],p:-fDisc()}]:[]),...(tipAdd>0?[{q:1,n:'❤ '+t('tipl'),d:[eur(tipAdd)],p:tipAdd}]:[])]}}
+const fbDay=()=>{try{return new Date().toLocaleDateString('en-CA',{timeZone:'Europe/Brussels'})}catch(e){return new Date().toISOString().slice(0,10)}};
+async function fbFetch(path,opt,ms){const c=new AbortController(),tm=setTimeout(()=>c.abort(),ms||7000);
+ try{const r=await fetch(HQ().db.replace(/\/+$/,'')+path,Object.assign({},opt||{},{signal:c.signal}));if(!r.ok)throw Error('HTTP '+r.status);return await r.json()}finally{clearTimeout(tm)}}
+const SCFG=()=>window._scfg||{pre:'',pad:2,start:1};
+/* La borne prend son numéro au même compteur du jour que le site, puis dépose
+   la commande là où l'écran cuisine du site la lit. */
+async function hqSend(p,unpaid){const d=fbDay(),c=SCFG();
+ if(!p.nn){const k=(await fbFetch('/q/'+d+'.json',{method:'POST',body:JSON.stringify({'.sv':'timestamp'})})).name;
+  const all=await fbFetch('/q/'+d+'.json?shallow=true'),ix=Object.keys(all||{}).sort().indexOf(k);
+  if(ix<0)throw Error('Numéro indisponible');
+  p.nn=c.start+ix;p.no=c.pre+String(p.nn).padStart(c.pad,'0');save()}
+ if(!p.sent){await fbFetch('/orders.json',{method:'POST',body:JSON.stringify({no:p.no,nn:p.nn,off:0,mode:p.mode,pay:p.pay+(unpaid?' · à encaisser':''),w:'',g:'',nom:p.nom||'',t:p.t,st:0,src:'borne',l:p.l})});p.sent=1;save()}
+ return{no:p.nn}}
+const SITE_IDS={"0-0":["Dürüms","Chawarma",7.5],"0-1":["Dürüms","Kefta",7.5],"0-2":["Dürüms","Hamburger",7],"0-3":["Dürüms","Poulet",7.5],"0-4":["Dürüms","Poulet pané",8],"0-5":["Dürüms","Merguez",7.5],"0-6":["Dürüms","Fallafels",7.5],"0-7":["Dürüms","Foie",8],"0-8":["Dürüms","Viande",8.5],"0-9":["Dürüms","Poisson",9.5],"0-10":["Dürüms","Dinde",7.5],"0-11":["Dürüms","Tenders",8],"1-0":["Sandwichs","Chawarma",7.5],"1-1":["Sandwichs","Kefta",7.5],"1-2":["Sandwichs","Hamburger",7],"1-3":["Sandwichs","Poulet",7.5],"1-4":["Sandwichs","Poulet pané",8],"1-5":["Sandwichs","Merguez",7.5],"1-6":["Sandwichs","Fallafels",7.5],"1-7":["Sandwichs","Foie",8],"1-8":["Sandwichs","Viande",8.5],"1-9":["Sandwichs","Poisson",9.5],"1-10":["Sandwichs","Dinde",7.5],"1-11":["Sandwichs","Tenders",8],"2-0":["Panini","Kefta",8],"2-1":["Panini","Poulet",8],"2-2":["Panini","Merguez",8],"2-3":["Panini","Tenders",8.5],"2-4":["Panini","Fallafels",8],"2-5":["Panini","Fish",8],"2-6":["Panini","Pita",8],"2-7":["Panini","Dinde",8],"2-8":["Panini","Viande",8.5],"2-9":["Panini","Mixte",8.5],"3-0":["Tacos","Kefta",9.5],"3-1":["Tacos","Poulet",9.5],"3-2":["Tacos","Tenders",9.5],"3-3":["Tacos","Fallafels",9.5],"3-4":["Tacos","Dinde",9.5],"3-5":["Tacos","Viande",9.5],"3-6":["Tacos","Mixte",10],"4-0":["Kapsalon","Poulet",9.5],"4-1":["Kapsalon","Fallafels",9.5],"4-2":["Kapsalon","Tenders",9.5],"4-3":["Kapsalon","Viande",10],"4-4":["Kapsalon","Hamburger",9],"4-5":["Kapsalon","Dinde",9.5],"4-6":["Kapsalon","Merguez",9.5],"4-7":["Kapsalon","Mixte",10],"4-8":["Kapsalon","Kebda",9.5],"4-9":["Kapsalon","Poisson",10.5],"5-0":["Menus","Bicky",8.5],"5-1":["Menus","Pita",9],"5-2":["Menus","Poulet",9],"5-3":["Menus","Tenders",9.5],"5-4":["Menus","Dinde",9],"5-5":["Menus","Merguez",9],"5-6":["Menus","Viande",10],"5-7":["Menus","Mixte",10],"5-8":["Menus","Hamburger",8.5],"5-9":["Menus","Menu enfant",8],"6-0":["Bicky","Hamburger",5],"6-1":["Bicky","Kefta",5.5],"6-2":["Bicky","Fish",5.5],"7-0":["Assiettes","Poulet",14],"7-1":["Assiettes","Merguez",14],"7-2":["Assiettes","Falafels",16],"7-3":["Assiettes","Fish",16],"7-4":["Assiettes","Poulet pané",16],"7-5":["Assiettes","Meze maison",18],"7-6":["Assiettes","Hamburger",12],"7-7":["Assiettes","Kefta",14],"7-8":["Assiettes","Brochettes",15.5],"7-9":["Assiettes","Foie",15],"7-10":["Assiettes","Grillade maison",18],"7-11":["Assiettes","Viande",16],"7-12":["Assiettes","Mixte",16],"8-0":["Grillades","Grillade (shawarma, poulet)",15.5],"8-1":["Grillades","Grillade maison (merguez, shawarma, poulet)",17],"8-2":["Grillades","Grillade du chef (kefta, shawarma, brochettes)",17.5],"8-3":["Grillades","Grillade pacha (kefta, shawarma, poulet, brochettes)",17.5],"9-0":["Salades","Caprice",6],"9-1":["Salades","Mixte",6.5],"9-2":["Salades","Maison",6.5],"9-3":["Salades","Poulet",9.5],"9-4":["Salades","Viande au choix",9.5],"10-0":["Spécialités","Tajine kefta",10.5],"10-1":["Spécialités","Tajine poulet légumes",11.5],"10-2":["Spécialités","Tajine poulet citron olives",13],"10-3":["Spécialités","Tajine agneau pruneaux",14],"10-4":["Spécialités","Couscous viande au choix",11.5],"11-0":["Frites & plus","Frites petite",3.5],"11-1":["Frites & plus","Frites moyenne",4],"11-2":["Frites & plus","Frites grande",4.5],"11-3":["Frites & plus","Ailes de poulet",4.5],"11-4":["Frites & plus","Bouchettes viande",6],"11-5":["Frites & plus","Poulycroc",3],"11-6":["Frites & plus","Boulettes",3],"11-7":["Frites & plus","Fricadelles",3],"12-0":["Sauces","Mayonnaise",0.75],"12-1":["Sauces","Ketchup",0.75],"12-2":["Sauces","Andalouse",0.75],"12-3":["Sauces","Algérienne",0.75],"12-4":["Sauces","Samouraï",0.75],"12-5":["Sauces","Blanche",0.75],"12-6":["Sauces","Harissa",0.75],"12-7":["Sauces","Américaine",0.75],"12-8":["Sauces","Brazil",0.75],"12-9":["Sauces","Bicky",0.75],"12-10":["Sauces","Mammouth",0.75],"12-11":["Sauces","Tartare",0.75],"12-12":["Sauces","Cocktail",0.75],"12-13":["Sauces","Curry ketchup",0.75],"12-14":["Sauces","Sauce à l’ail",0.75],"12-15":["Sauces","Barbecue",0.75],"12-16":["Sauces","Moutarde",0.75],"12-17":["Sauces","Piquante",0.75],"12-18":["Sauces","Pili-pili",0.75],"12-19":["Sauces","Sweet chili",0.75],"13-0":["Suppléments","Feta",1],"13-1":["Suppléments","Kefta",3.5],"13-2":["Suppléments","Merguez",3.5],"13-3":["Suppléments","Extra sauce",0.75],"13-4":["Suppléments","Cheddar",1],"13-5":["Suppléments","Poulet",3.5],"13-6":["Suppléments","Côte d’agneau",5],"14-0":["Boissons","Thé à la menthe 1 pers.",2.5],"14-1":["Boissons","Thé à la menthe 2 pers.",4.5],"14-2":["Boissons","Thé à la menthe 5 pers.",8],"14-3":["Boissons","Café noir",2.5],"14-4":["Boissons","Café au lait",3],"14-5":["Boissons","Redbull",3],"14-6":["Boissons","Freez",3],"14-7":["Boissons","Softs 0,33 L",2],"14-8":["Boissons","Caprisun",1],"15-0":["Desserts","Dame blanche",3.5],"15-1":["Desserts","Pâtisserie marocaine",3.5],"15-2":["Desserts","Tiramisu maison",3.5]};
+async function siteSync(){const H=HQ();if(!H.db)return;let cf;
+ try{cf=await fbFetch('/site_config.json',{},9000)}catch(e){return}
+ if(!cf)return;const g=cf.cfg||{};
+ window._scfg={pre:String(g.noPre||'').trim(),pad:Math.min(4,Math.max(1,Math.round(+g.noPad)||2)),start:Math.max(1,Math.round(+g.noStart)||1)};
+ if(!H.sync||cf.customD)return;
+ const ov=cf.ov||{},ph=cf.ph||{},idx={},sph={},sout={};let ch=0;
+ S.cats.forEach(c=>c.items.forEach(i=>{idx[_nk(c.n+'|'+i.n)]=i}));
+ for(const id in SITE_IDS){const z=SITE_IDS[id],k=_nk(z[0]+'|'+z[1]);
+  const it=idx[D_ALIAS_R[k]||k]||idx[k]||idx[_nk(z[0]+'|'+String(z[1]).replace(/\s*\(.*\)\s*$/,''))];if(!it)continue;
+  const o=ov[id]||{},np=o.p!=null&&o.p!==''&&isFinite(+o.p)?+o.p:z[2];
+  if(Math.abs(it.p-np)>.001){it.p=np;ch++}
+  const u=ph[id]||ph[z[0]+'|'+z[1]];if(u)sph[it.id]=u;
+  if(o.out||o.del)sout[it.id]=1}
+ window._sph=sph;window._sout=sout;window._sync=new Date().toLocaleTimeString('fr-BE',{hour:'2-digit',minute:'2-digit'});
+ if(ch)save();
+ if(view==='idle'||(view==='menu'&&!ed&&!cart.length&&!$('#m').firstChild))render()}
+const D_ALIAS_R={'frites & plus|ailes de poulet':'frites & plus|pilons de poulet'};
+setTimeout(siteSync,2500);setInterval(()=>{if(view==='idle')siteSync()},600000);addEventListener('online',()=>setTimeout(siteSync,1500));
 let hqFl=0;
 async function hqFlush(){const H=HQ();if(hqFl||!H.q.length||!H.on)return;hqFl=1;
  try{for(const it of[...H.q]){let no=0,ok=0;
@@ -1465,7 +1531,7 @@ setInterval(hqFlush,30000);addEventListener('online',hqFlush);setTimeout(hqFlush
 let hqBusy=0;
 async function done(m){if(hqBusy)return;hqBusy=1;
  try{const H=HQ();let R=null,p=null;
-  if(H.on&&H.url&&H.key){p=hqBuild(m);mod('<div class="ok"><div class="spin"></div></div><h3>Envoi en cuisine…</h3>');
+  if(H.on&&H.db){p=hqBuild(m);mod('<div class="ok"><div class="spin"></div></div><h3>Envoi en cuisine…</h3>');
    try{R=await hqSend(p,m==='cash')}catch(e){R=null;H.q.push({p,unpaid:m==='cash'?1:0});save()}}
   done0(m,p?{no:R?R.no:0,id:p.id}:null)}
  finally{hqBusy=0}}
@@ -1480,8 +1546,10 @@ function aHq(){const H=HQ(),q=H.q.length;
  return `<div class="sec"><h3>Écrans cuisine &amp; clients (haythemfood.com)</h3><p class="note">Chaque commande de la borne est envoyée au même serveur que le site : elle apparaît sur l’écran cuisine (<b>#cuisine</b>) et sur l’écran clients (<b>#file</b>), avec le même numéro. Sans internet, la commande est renvoyée dès que le réseau revient.</p>
  <label class="tg"><input type="checkbox" ${H.on?'checked':''} onchange="hqS('on',this.checked);admin()">Envoyer les commandes de la borne à la cuisine</label>
  <label class="fld">Adresse du site<input value="${esc(H.site)}" onchange="hqS('site',this.value.trim())"></label>
- <label class="fld">Serveur de commandes (Supabase)<input value="${esc(H.url)}" onchange="hqS('url',this.value.trim())"></label>
- <label class="fld">Clé publique du serveur<input value="${esc(H.key)}" onchange="hqS('key',this.value.trim())"></label>
+ <label class="fld">Base de commandes du site (Firebase)<input value="${esc(H.db)}" onchange="hqS('db',this.value.trim())"></label>
+ <label class="tg"><input type="checkbox" ${H.sync?'checked':''} onchange="hqS('sync',this.checked);admin()">Reprendre les prix et les photos modifiés sur le site</label>
+ <p class="note">Quand cette case est cochée, le site fait foi : un prix changé dans les réglages du site est repris par la borne en quelques minutes. ${window._sync?'Dernière mise à jour : '+window._sync:''}</p>
+ 
  ${q?`<p class="note"><b>${q} commande(s) en attente d’envoi.</b></p><button class="btn g s" onclick="hqFlush().then(admin)">Renvoyer maintenant</button>`:''}
  <div class="rw2" style="margin-top:8px"><button class="btn" onclick="hqTest()">Envoyer un ticket test</button><button class="btn g" onclick="hqOpen('cuisine')">👨‍🍳 Ouvrir l’écran cuisine</button><button class="btn g" onclick="hqOpen('file')">📺 Ouvrir l’écran clients</button></div><p id="hq_msg" class="note"></p></div>`}
 /* ===== v17 : drapeaux, infos société, photos des options ===== */
