@@ -678,8 +678,24 @@ body .idle h1{font-size:clamp(38px,6.4vw,52px);
 .btn.g.nw,.btn.chef{background:linear-gradient(135deg,#c59b27 0%,#f9e29c 50%,#aa771c 100%);background-size:200% auto;color:#040914;border:0}
 .btn.chef{border-radius:18px}
 .adm .btn.g{background:#fff;color:#1d2433;border:1px solid var(--gold)}
-.bar .btn{background:linear-gradient(105deg,transparent 42%,#fff8 50%,transparent 58%) -160% 0/260% 100% no-repeat,linear-gradient(135deg,#c59b27 0%,#f9e29c 50%,#aa771c 100%);border-radius:999px}
+.bar .btn{background:linear-gradient(135deg,#c59b27 0%,#f9e29c 50%,#aa771c 100%);background-size:200% auto;border-radius:999px}
 .btn[disabled]{filter:grayscale(.5);box-shadow:none;transform:none;cursor:default}
+
+/* Brillance : sur écran tactile il n'y a pas de survol, donc l'or bouge tout seul + un reflet passe sur le bouton */
+.btn:not(.g):not(.d):not(.clr):not([disabled]){animation:gold 5s ease-in-out infinite}
+.btn:not(.g):not(.d):not(.clr):not([disabled])::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(105deg,transparent 38%,#fff9 50%,transparent 62%) no-repeat;background-size:250% 100%;background-position:160% 0;animation:gloss 3.8s ease-in-out infinite}
+.btn:not(.g):not(.d):not(.clr):not([disabled]):active::after{animation:gloss .5s ease-out 1}
+.btn.g::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(105deg,transparent 40%,#f9e29c40 50%,transparent 60%) no-repeat;background-size:250% 100%;background-position:160% 0;animation:gloss 6s ease-in-out 1.5s infinite}
+@keyframes gold{0%,100%{background-position:left center}50%{background-position:right center}}
+@keyframes gloss{0%,55%{background-position:160% 0}100%{background-position:-60% 0}}
+.bar .btn:not([disabled]),.tot .btn:not([disabled]){animation:gold 5s ease-in-out infinite,ring 2.6s ease-out infinite}
+.idle .row .btn{animation:cardIn .7s .55s cubic-bezier(.2,.9,.3,1) both,gold 5s ease-in-out 1.3s infinite}
+@media (prefers-reduced-motion:reduce){.btn,.btn::after{animation:none!important}}
+
+/* Priorité absolue au style du site (d'anciennes règles plus précises gardaient l'ancien doré) */
+.btn:not(.g):not(.d):not(.clr){background:linear-gradient(135deg,#c59b27 0%,#f9e29c 50%,#aa771c 100%)!important;background-size:200% auto!important;color:#040914!important;border:0!important;border-radius:999px!important;box-shadow:0 4px 20px -2px #d4af3766,inset 0 1px 1px #fff9!important}
+.btn.g{background:#0c1b3ed9!important;color:#f9e29c!important;border:1px solid #d4af3773!important;border-radius:999px!important}
+.adm .btn.g{background:#fff!important;color:#1d2433!important;border:1px solid #d4af37!important}
 </style></head><body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="gd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f8e08e"/><stop offset=".5" stop-color="#d99a05"/><stop offset="1" stop-color="#a8710a"/></linearGradient></defs>
 <symbol id="hand" viewBox="0 0 100 120"><g fill="url(#gd)"><rect x="43" y="4" width="14" height="54" rx="7"/><rect x="28" y="16" width="13" height="46" rx="6.5"/><rect x="59" y="16" width="13" height="46" rx="6.5"/><path d="M27 72C13 64 8 50 10 40c1-6 9-6 11 0 2 8 6 14 11 18z"/><path d="M73 72c14-8 19-22 17-32-1-6-9-6-11 0-2 8-6 14-11 18z"/><path d="M26 52h48v26c0 22-10 34-24 40-14-6-24-18-24-40z"/></g><circle cx="50" cy="84" r="11" fill="#fff9e6"/><circle cx="50" cy="84" r="5.5" fill="url(#gd)"/></symbol>
 <symbol id="foot" viewBox="0 0 40 80"><g fill="url(#gd)"><path d="M6 28C2 42 4 62 12 72c6 8 18 6 20-6 2-12 0-26-4-36C24 20 10 18 6 28z"/><circle cx="11" cy="13" r="5.5"/><circle cx="21" cy="8" r="4"/><circle cx="29" cy="10" r="3.5"/><circle cx="35" cy="15" r="3"/><circle cx="38" cy="22" r="2.5"/></g></symbol></svg>
