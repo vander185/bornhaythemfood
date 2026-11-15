@@ -559,6 +559,30 @@ input,select{padding:13px;font-size:18px;min-height:54px}
 /*kf*/@keyframes rise{from{opacity:0;transform:translateY(22px) scale(.9)}}
 /* un cran plus grand sur un écran de borne */
 .idle h1{font-size:clamp(46px,8vw,104px)}
+
+/* ====== Photos plus vivantes ====== */
+/* arrivée en cascade des choix (crudités, sauces, suppléments, boissons) */
+.op{animation:opIn .42s cubic-bezier(.2,.9,.3,1) both;animation-delay:calc(var(--oi,0)*28ms)}
+@keyframes opIn{from{opacity:0;transform:translateY(14px) scale(.94)}to{opacity:1;transform:none}}
+.op .opi img{transition:transform .5s cubic-bezier(.2,.9,.3,1),filter .4s}
+.op:active{transform:scale(.95)}
+.op:active .opi img{transform:scale(1.12)}
+.op.on .opi img{transform:scale(1.08);filter:saturate(1.12) brightness(1.04)}
+.op.on{box-shadow:0 8px 22px #d4af3755,0 0 0 2px var(--gold)}
+/* un éclat doré traverse la photo choisie */
+.op.on .opi::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(105deg,transparent 42%,#fffbe8b3 50%,transparent 58%) -150% 0/260% 100% no-repeat;
+  animation:opSh 1.1s ease-out}
+@keyframes opSh{to{background-position:250% 0}}
+/* photos des plats : léger zoom lent, et zoom net au toucher */
+.card .ph,.card img,.tile img{transition:transform .55s cubic-bezier(.2,.9,.3,1)}
+.card:active img,.tile:active img{transform:scale(1.07)}
+.ct .card{animation:cardUp .5s cubic-bezier(.2,.9,.3,1) both;animation-delay:calc(var(--i,0)*45ms)}
+@keyframes cardUp{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){
+ .op,.ct .card{animation:none}
+ .op .opi img,.card img,.tile img{transition:none}
+ .op.on .opi::after{animation:none;display:none}}
 </style></head><body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="gd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f8e08e"/><stop offset=".5" stop-color="#d99a05"/><stop offset="1" stop-color="#a8710a"/></linearGradient></defs>
 <symbol id="hand" viewBox="0 0 100 120"><g fill="url(#gd)"><rect x="43" y="4" width="14" height="54" rx="7"/><rect x="28" y="16" width="13" height="46" rx="6.5"/><rect x="59" y="16" width="13" height="46" rx="6.5"/><path d="M27 72C13 64 8 50 10 40c1-6 9-6 11 0 2 8 6 14 11 18z"/><path d="M73 72c14-8 19-22 17-32-1-6-9-6-11 0-2 8-6 14-11 18z"/><path d="M26 52h48v26c0 22-10 34-24 40-14-6-24-18-24-40z"/></g><circle cx="50" cy="84" r="11" fill="#fff9e6"/><circle cx="50" cy="84" r="5.5" fill="url(#gd)"/></symbol>
 <symbol id="foot" viewBox="0 0 40 80"><g fill="url(#gd)"><path d="M6 28C2 42 4 62 12 72c6 8 18 6 20-6 2-12 0-26-4-36C24 20 10 18 6 28z"/><circle cx="11" cy="13" r="5.5"/><circle cx="21" cy="8" r="4"/><circle cx="29" cy="10" r="3.5"/><circle cx="35" cy="15" r="3"/><circle cx="38" cy="22" r="2.5"/></g></symbol></svg>
@@ -931,7 +955,7 @@ const MTYPES=['Dürüm','Sandwich'],MNOT=/^(Bicky|Pita|Menu enfant)/i,oF=i=>{if(
 const bReq=i=>i.cat.n==='Menus'||i.n.startsWith('Softs');
 const DP=()=>{const it=all().find(i=>i.n.startsWith('Softs'));return it?it.p:2};
 const unit=l=>{const x=find(l.id);return x.p+(l.b&&!bReq(x)?DP():0)+l.x.reduce((s,n)=>s+((EX().find(e=>e.n===n)||{}).p||0),0)};
-const desc=(l,tr)=>{const T=(k,f)=>tr?t(k):f,V=v=>tr?ov(v):v;return[l.t&&(tr?ov(l.t):l.t),l.r.length&&T('garn','Garniture')+' : '+(S.opt.crud.length&&S.opt.crud.every(v=>l.r.includes(v))?V(ALLC):l.r.map(V).join(', ')),l.s.length&&T('sauces','Sauces')+' : '+l.s.map(V).join(', '),l.x.length&&T('extra','Extra')+' : '+l.x.join(', '),tr&&l.b?ov(l.b):l.b].filter(Boolean)};
+const desc=(l,tr)=>{const T=(k,f)=>tr?t(k):f,V=v=>tr?ov(v):v;return[l.t&&(tr?ov(l.t):l.t),l.r.length&&T('garn','Garniture')+' : '+(isAllCru(l.r)?V(ALLC):l.r.map(V).join(', ')),l.s.length&&T('sauces','Sauces')+' : '+l.s.map(V).join(', '),l.x.length&&T('extra','Extra')+' : '+l.x.join(', '),tr&&l.b?ov(l.b):l.b].filter(Boolean)};
 const sig=l=>JSON.stringify([l.id,l.s,l.r,l.x,l.b,l.t||'']);
 function put(l){const k=cart.findIndex(m=>sig(m)===sig(l));if(k>=0)cart[k].q+=l.q;else cart.push(l)}
 let tipAdd=0;const total=()=>cart.reduce((s,l)=>s+unit(l)*l.q,0)+tipAdd-fDisc();
@@ -1016,11 +1040,14 @@ function dec(id){let k=-1;cart.forEach((l,j)=>{if(l.id===id)k=j});if(k>=0)chg(k,
 function add(id){const x=find(id);if(oF(x))openSheet(id,-1);else{const rc=rct(),l={id,q:1,s:[],r:[],x:[],b:''};put(l);bump=id;hap();render();fly(rc);toast(l)}}
 function chg(i,d){hap();cart[i].q+=d;if(cart[i].q<=0)cart.splice(i,1);if(!count())cartOpen=false;render()}
 let ed=null;
+const CRUNO=['Olives','Poivrons'];
+const cruAll=()=>S.opt.crud.filter(v=>!CRUNO.some(x=>_nk(x)===_nk(v)));
+const isAllCru=a=>{const c=cruAll();return c.length>0&&c.every(v=>a.includes(v))};
 const lst=g=>g==='t'?MTYPES:g==='s'?[NOS,...sauceOrder()]:g==='r'?[NOC,ALLC,...S.opt.crud]:g==='x'?EX().map(e=>e.n):S.opt.drinks;
 function openSheet(id,i){const x=find(id),l=i>=0?cart[i]:{q:1,s:[],r:[],x:[],t:oF(x).includes('t')?MTYPES[0]:'',b:oF(x).includes('b')&&bReq(x)?(S.opt.drinks[0]||''):''};ed={id,i,q:l.q,t:l.t||(oF(x).includes('t')?MTYPES[0]:''),s:[...l.s],r:[...l.r],x:[...l.x],b:l.b,st:0};drawSheet()}
 function tog(g,v){let a=ed[g];const on=a.includes(v),C=S.opt.crud;
  if(g==='s')a=v===NOS?(on?[]:[v]):(on?a.filter(z=>z!==v):[...a.filter(z=>z!==NOS),v]);
- else if(g==='r'&&v===ALLC)a=C.every(z=>a.includes(z))?[]:[...C];
+ else if(g==='r'&&v===ALLC)a=isAllCru(a)?[]:[...cruAll()];
  else if(g==='r')a=v===NOC?(on?[]:[v]):(on?a.filter(z=>z!==v):[...a.filter(z=>z!==NOC),v]);
  else a=on?a.filter(z=>z!==v):[...a,v];
  ed[g]=a}
@@ -1039,7 +1066,7 @@ function sGo(d,abs){const n=stepsOf(find(ed.id)).length;ed.st=Math.max(0,Math.mi
 function drawSheet(){const x=find(ed.id),ex=EX(),bx=document.querySelector('.box'),st=bx?bx.scrollTop:0;
  const sts=stepsOf(x),n=sts.length,si=Math.min(ed.st||0,Math.max(0,n-1)),k=sts[si],last=si>=n-1;
  const g=(t,k,sel,pr)=>`<div class="grp"><h4>${t}</h4><div class="opg${k==='s'?' sm':''}">${lst(k).map((v,j)=>opTile(k,v,sel,j,pr?(ex[j]||{}).p||0:0)).join('')}</div></div>`;
- const rs=[...ed.r,...(S.opt.crud.length&&S.opt.crud.every(v=>ed.r.includes(v))?[ALLC]:[])];
+ const rs=[...ed.r,...(isAllCru(ed.r)?[ALLC]:[])];
  const sum=x.p+(ed.b&&!bReq(x)?DP():0)+ed.x.reduce((s,n)=>s+((ex.find(e=>e.n===n)||{}).p||0),0);
  mod(`<div class="mh"><div><h3>${esc(full(x))}</h3><p class="note" style="margin:2px 0 0">${eur(x.p)}</p>${sheetInfo(x)}</div><button class="btn g x" onclick="ed=null;if(upOn)upsell();else mod(\'\')">✕</button></div>${n>1?`<div class="stp">${sts.map((z,j)=>`<button class="${j===si?'on':j<si?'dn':''}" onclick="sGo(${j},1)"><i>${j<si?'✓':j+1}</i><span>${esc(stLbl(x,z).replace(/\s*\(.*$/,''))}</span></button>`).join('')}</div>`:''}${k==='s'?chefBtn():''}${k?g((n>1?(si+1)+'/'+n+' · ':'')+stLbl(x,k),k,k==='t'?[ed.t]:k==='r'?rs:k==='s'?ed.s:k==='x'?ed.x:[ed.b],k==='x'?1:0):''}<div class="sf">${last?`<div class="st"><button class="qb" onclick="sq(-1)">−</button><b>${ed.q}</b><button class="qb" onclick="sq(1)">+</button></div>`:''}${si>0?`<button class="btn g" onclick="sGo(-1)">‹</button>`:''}${last?`<button class="btn" onclick="sok()">${ed.i>=0?t('upd'):t('addc')} · ${eur(sum*ed.q)}</button>`:`<button class="btn" onclick="sGo(1)">${t('next')} ›</button>`}</div>`);
  const nb=document.querySelector('.box');if(nb)nb.scrollTop=st;const sa=document.querySelector('.stp button.on'),sp=sa&&sa.parentNode;if(sp&&getComputedStyle(sp).direction==='ltr')sp.scrollLeft=sa.offsetLeft-(sp.clientWidth-sa.offsetWidth)/2}
@@ -1399,7 +1426,7 @@ const frOf=v=>{const n=String(v).toLowerCase().normalize("NFD").replace(/[\u0300
 const brandHtml=n=>{const p=String(n||"").trim().split(/\s+/),a=p.shift()||"";return `<span class="b1">${esc(a)}</span>${p.length?`<span class="b2">${esc(p.join(" "))}</span>`:""}`};
 const drkOf=v=>{const n=String(v).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');if(/menthe/.test(n))return DRK2[/5 ?pers/.test(n)?'the5':/2 ?pers/.test(n)?'the2':'the1'];if(/cafe/.test(n))return DRK2[/lait/.test(n)?'lait':'cafe'];if(/red ?bull/.test(n))return DRK2.redbull;if(/freez/.test(n))return DRK2.freez;if(/capri/.test(n))return DRK2.capri;if(/^softs?/.test(n))return DRK2.softs;if(/coca|cola/.test(n))return DRK[/zero/.test(n)?'Coca-Cola Zéro':'Coca-Cola'];if(/fanta/.test(n))return DRK[/citron|lemon/.test(n)?'Fanta Citron':'Fanta'];if(/sprite/.test(n))return DRK.Sprite;if(/schweppes/.test(n))return DRK[/agrum/.test(n)?'Schweppes Agrumes':'Schweppes Lemon'];if(/orangina/.test(n))return DRK.Orangina;if(/ice ?tea|lipton|the glace/.test(n))return DRK['Ice Tea'];if(/\beau\b|water|\bspa\b/.test(n))return DRK.Eau;return''};
 const OPK=v=>String(v).replace(/[’‘]/g,"'");
-function opTile(k,v,sel,j,pr){const n=OPK(v),dk=k==='b'?drkOf(v):'',sp=v===NOS||v===NOC,em=sp?'🚫':v===ALLC?'🥗':(OPE[n]||(k==='t'?(v===MTYPES[0]?'🌯':'🥖'):k==='s'?'🫙':k==='b'?'🥤':'🍽️')),p=!sp&&v!==ALLC&&OPI[n],base=((S.hq&&S.hq.site)||'https://www.haythemfood.com').replace(/\/+$/,'');
+function opTile(k,v,sel,j,pr){const n=OPK(v),dk=k==='b'?drkOf(v):'',sp=v===NOS||v===NOC,em=sp?'🚫':v===ALLC?'🥗':(OPE[n]||(k==='t'?(v===MTYPES[0]?'🌯':'🥖'):k==='s'?'🫙':k==='b'?'🥤':'🍽️')),p=!sp&&OPI[n],base=((S.hq&&S.hq.site)||'https://www.haythemfood.com').replace(/\/+$/,'');
  return `<button class="op ${sel.includes(v)?'on':''}" onclick="sc('${k}',${j})"><i class="opi${dk?' dk':''}"><em>${k==='s'&&!sp?sauceSvg(v):em}</em>${dk?`<img src="${dk}" alt="">`:p?`<img src="${p}" loading="lazy" alt="" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='${base}/${p}'}else this.remove()">`:''}</i>${k==='s'&&sauceTop(v)?'<b class="tp">★</b>':''}<span>${esc(ov(v))}</span>${pr?`<small>+${eur(pr)}</small>`:''}</button>`}
 /* RÉCEPTION DES COMMANDES (WhatsApp / Telegram / ntfy) */
 const NF=()=>S.nf||(S.nf={wa:{on:false,phone:'',key:''},tg:{on:false,token:'',chat:''},nt:{on:false,topic:''},q:[]}),NFL={wa:'WhatsApp',tg:'Telegram',nt:'ntfy'};
