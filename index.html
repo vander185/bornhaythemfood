@@ -763,6 +763,16 @@ body .top h2{color:#f9e29c!important;font-family:'Playfair Display',Georgia,seri
  .idle .orn,.idle .flt,.idle .tra{display:none!important}
  body .idle h1{font-size:clamp(22px,7vh,34px)!important}
 }
+/* Sous-menus : toutes les options ont un contour or avec une lumière qui tourne (plus forte sur l'option choisie) */
+body .op{border:1.5px solid #d4af3799!important}
+body .op:not(.on)::after{content:"";position:absolute;inset:-2px;border-radius:inherit;padding:3px;pointer-events:none;z-index:3;
+ background:conic-gradient(from var(--ga),#0000 0 55%,#e09a0099 68%,#ffd54a 78%,#fff6c9 81%,#e09a00 87%,#0000 94%);
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;
+ animation:gspin 9s linear infinite;opacity:.85}
+body .op:nth-child(4n+2):not(.on)::after{animation-delay:-2.25s}
+body .op:nth-child(4n+3):not(.on)::after{animation-delay:-4.5s}
+body .op:nth-child(4n):not(.on)::after{animation-delay:-6.75s}
+@media(prefers-reduced-motion:reduce){body .op::after{animation:none!important}}
 </style></head><body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="gd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f8e08e"/><stop offset=".5" stop-color="#d99a05"/><stop offset="1" stop-color="#a8710a"/></linearGradient></defs>
 <symbol id="hand" viewBox="0 0 100 120"><g fill="url(#gd)"><rect x="43" y="4" width="14" height="54" rx="7"/><rect x="28" y="16" width="13" height="46" rx="6.5"/><rect x="59" y="16" width="13" height="46" rx="6.5"/><path d="M27 72C13 64 8 50 10 40c1-6 9-6 11 0 2 8 6 14 11 18z"/><path d="M73 72c14-8 19-22 17-32-1-6-9-6-11 0-2 8-6 14-11 18z"/><path d="M26 52h48v26c0 22-10 34-24 40-14-6-24-18-24-40z"/></g><circle cx="50" cy="84" r="11" fill="#fff9e6"/><circle cx="50" cy="84" r="5.5" fill="url(#gd)"/></symbol>
 <symbol id="foot" viewBox="0 0 40 80"><g fill="url(#gd)"><path d="M6 28C2 42 4 62 12 72c6 8 18 6 20-6 2-12 0-26-4-36C24 20 10 18 6 28z"/><circle cx="11" cy="13" r="5.5"/><circle cx="21" cy="8" r="4"/><circle cx="29" cy="10" r="3.5"/><circle cx="35" cy="15" r="3"/><circle cx="38" cy="22" r="2.5"/></g></symbol></svg>
