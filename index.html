@@ -787,6 +787,22 @@ body .top .tl h2 small{display:block;margin-top:4px;font-family:Inter,system-ui,
 #m .sf.cf>.btn.nw{flex:none!important;width:100%!important;min-width:0!important;min-height:68px;font-size:clamp(17px,2.2vw,22px)!important;padding:14px!important;background:linear-gradient(135deg,#c59b27 0%,#f9e29c 50%,#aa771c 100%)!important;background-size:200% auto!important;color:#040914!important;border:0!important;overflow:hidden}
 #m .ol{flex-shrink:0!important;min-height:fit-content;max-height:none!important;overflow:visible!important}
 #m .box:has(.ok){overflow-y:auto}
+/* Téléphone : fenêtre de composition plus claire */
+@media (max-width:600px){
+ #m .sf:not(.cf){display:flex!important;flex-wrap:wrap!important;align-items:center!important;gap:10px!important}
+ #m .sf:not(.cf) .st{order:1;flex:1 1 auto;display:flex;align-items:center;justify-content:flex-start;gap:12px}
+ #m .sf:not(.cf) .st .qb{width:50px!important;height:50px!important;min-width:50px;font-size:24px}
+ #m .sf:not(.cf) .btn.g{order:2;flex:none!important;width:58px!important;min-width:58px!important;min-height:52px!important;padding:0!important}
+ #m .sf:not(.cf) .btn:not(.g){order:3;flex:1 1 100%!important;width:100%!important;min-height:58px!important;font-size:18px!important;white-space:nowrap;padding:0 16px!important;display:flex!important;align-items:center!important;justify-content:center!important}
+ #m .sf:not(.cf) .btn.g{display:flex!important;align-items:center;justify-content:center}
+ #m .stp{display:flex!important;gap:6px!important;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;padding:6px!important;flex-shrink:0!important;min-height:max-content}
+ #m .stp::-webkit-scrollbar{display:none}
+ #m .stp button{flex:0 0 auto!important;min-width:0!important;margin:0!important}
+ #m .stp button:not(.on) span{display:none!important}
+ #m .stp button.on{flex:1 1 auto!important;min-width:0!important;display:flex;align-items:center;gap:8px;padding:8px 12px!important}
+ #m .stp button.on span{display:block!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+ #m .stp button i{flex:none}
+}
 </style></head><body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="gd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f8e08e"/><stop offset=".5" stop-color="#d99a05"/><stop offset="1" stop-color="#a8710a"/></linearGradient></defs>
 <symbol id="hand" viewBox="0 0 100 120"><g fill="url(#gd)"><rect x="43" y="4" width="14" height="54" rx="7"/><rect x="28" y="16" width="13" height="46" rx="6.5"/><rect x="59" y="16" width="13" height="46" rx="6.5"/><path d="M27 72C13 64 8 50 10 40c1-6 9-6 11 0 2 8 6 14 11 18z"/><path d="M73 72c14-8 19-22 17-32-1-6-9-6-11 0-2 8-6 14-11 18z"/><path d="M26 52h48v26c0 22-10 34-24 40-14-6-24-18-24-40z"/></g><circle cx="50" cy="84" r="11" fill="#fff9e6"/><circle cx="50" cy="84" r="5.5" fill="url(#gd)"/></symbol>
 <symbol id="foot" viewBox="0 0 40 80"><g fill="url(#gd)"><path d="M6 28C2 42 4 62 12 72c6 8 18 6 20-6 2-12 0-26-4-36C24 20 10 18 6 28z"/><circle cx="11" cy="13" r="5.5"/><circle cx="21" cy="8" r="4"/><circle cx="29" cy="10" r="3.5"/><circle cx="35" cy="15" r="3"/><circle cx="38" cy="22" r="2.5"/></g></symbol></svg>
