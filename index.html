@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
 <title>Borne Haythem Food</title>
 <link rel="manifest" href="manifest.webmanifest?v=2"><meta name="theme-color" content="#d4af37"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Haythem Food"><link rel="icon" href="icon-192.png?v=2"><link rel="apple-touch-icon" href="icon-512.png?v=2">
 <style>
@@ -740,6 +740,29 @@ body .top .btn.g::after{background:linear-gradient(105deg,transparent 40%,#f9e29
 body .top .lgb{padding:0 14px!important}
 body .top .lgb span{color:#f9e29c}
 body .top h2{color:#f9e29c!important;font-family:'Playfair Display',Georgia,serif;text-shadow:0 2px 4px #000a}
+/* Écran figé : l'appli remplit exactement l'écran, ne bouge plus vers le haut ou le bas ; seules les listes défilent à l'intérieur */
+@media screen{
+ html{position:fixed;inset:0;width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
+ body{position:fixed;inset:0;width:100%;height:100%;height:100dvh;margin:0;overflow:hidden;overscroll-behavior:none;touch-action:pan-x pan-y}
+ #app{position:absolute;inset:0;overflow:hidden;display:flex;flex-direction:column}
+ #app>*{min-height:0}
+ #app>.idle{flex:1;height:100%;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;box-sizing:border-box}
+ .ct,.side,.cart,.cl,.mod,.box,.adm,#m .box{overscroll-behavior:contain}
+ .ct,.side{-webkit-overflow-scrolling:touch}
+}
+/* écran couché ou petit : l'accueil se réduit pour tenir sans défiler */
+@media screen and (max-height:820px){
+ .idle .hfl{max-height:30vh!important;width:auto!important}
+ body .idle h1{font-size:clamp(26px,6vh,46px)!important;margin-top:2px!important}
+ .idle p.f{font-size:16px!important}
+ .idle .row .btn{padding-top:12px!important;padding-bottom:12px!important}
+ .idle .lang{margin:6px 0!important}
+}
+@media screen and (max-height:520px){
+ .idle .hfl{max-height:24vh!important}
+ .idle .orn,.idle .flt,.idle .tra{display:none!important}
+ body .idle h1{font-size:clamp(22px,7vh,34px)!important}
+}
 </style></head><body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="gd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f8e08e"/><stop offset=".5" stop-color="#d99a05"/><stop offset="1" stop-color="#a8710a"/></linearGradient></defs>
 <symbol id="hand" viewBox="0 0 100 120"><g fill="url(#gd)"><rect x="43" y="4" width="14" height="54" rx="7"/><rect x="28" y="16" width="13" height="46" rx="6.5"/><rect x="59" y="16" width="13" height="46" rx="6.5"/><path d="M27 72C13 64 8 50 10 40c1-6 9-6 11 0 2 8 6 14 11 18z"/><path d="M73 72c14-8 19-22 17-32-1-6-9-6-11 0-2 8-6 14-11 18z"/><path d="M26 52h48v26c0 22-10 34-24 40-14-6-24-18-24-40z"/></g><circle cx="50" cy="84" r="11" fill="#fff9e6"/><circle cx="50" cy="84" r="5.5" fill="url(#gd)"/></symbol>
 <symbol id="foot" viewBox="0 0 40 80"><g fill="url(#gd)"><path d="M6 28C2 42 4 62 12 72c6 8 18 6 20-6 2-12 0-26-4-36C24 20 10 18 6 28z"/><circle cx="11" cy="13" r="5.5"/><circle cx="21" cy="8" r="4"/><circle cx="29" cy="10" r="3.5"/><circle cx="35" cy="15" r="3"/><circle cx="38" cy="22" r="2.5"/></g></symbol></svg>
