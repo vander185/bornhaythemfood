@@ -577,7 +577,7 @@ input,select{padding:13px;font-size:18px;min-height:54px}
 /* photos des plats : léger zoom lent, et zoom net au toucher */
 .card .ph,.card img,.tile img{transition:transform .55s cubic-bezier(.2,.9,.3,1)}
 .card:active img,.tile:active img{transform:scale(1.07)}
-.ct .card{animation:cardUp .5s cubic-bezier(.2,.9,.3,1) both;animation-delay:calc(var(--i,0)*45ms)}
+
 @keyframes cardUp{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){
  .op,.ct .card{animation:none}
@@ -608,7 +608,7 @@ body .idle h1{font-size:clamp(38px,6.4vw,52px);
 @media(prefers-reduced-motion:reduce){.mod.re .op.nw,.mod.re .op.nw.on .opi img,.mod.re .op.on.nw .opi::after{animation:none!important}}
 
 /* changement d'étape : les nouveaux choix arrivent en cascade, sans rejouer la fenêtre */
-.mod.re.nstep .op{animation:opIn .42s cubic-bezier(.2,.9,.3,1) both!important;animation-delay:calc(var(--oi,0)*28ms)!important}
+
 
 /* ====== Fenêtre de personnalisation, taille borne ======
    Photos plus grandes, étapes en barre segmentée, boutons de pied larges. */
@@ -641,6 +641,29 @@ body .idle h1{font-size:clamp(38px,6.4vw,52px);
  #m .sf .btn{min-height:60px}
  #m .sf .btn.g{width:60px;min-width:60px}
 }
+
+/* ====== Passer d'un menu à l'autre ======
+   Changement de catégorie : la colonne et l'en-tête ne bougent plus,
+   seul le contenu glisse, vers le haut ou vers le bas selon le sens. */
+#app.sw .ct h1,#app.sw .ct .sub{animation:swT .34s cubic-bezier(.2,.9,.3,1) both}
+#app.sw .ct .card,#app.sw .ct .tile,#app.sw .ct .promo{animation:swC .4s cubic-bezier(.2,.9,.3,1) both;animation-delay:calc(min(var(--i,0),9)*26ms + 40ms)}
+#app.sw.bk .ct .card,#app.sw.bk .ct .tile,#app.sw.bk .ct .promo{animation-name:swCb}
+#app.sw.bk .ct h1,#app.sw.bk .ct .sub{animation-name:swTb}
+@keyframes swT{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes swTb{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}
+@keyframes swC{from{opacity:0;transform:translateY(34px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes swCb{from{opacity:0;transform:translateY(-34px) scale(.97)}to{opacity:1;transform:none}}
+/* la catégorie choisie s'allume dans la colonne */
+#app.sw .si.on{animation:siOn .42s cubic-bezier(.2,.9,.3,1.3) both}
+@keyframes siOn{0%{transform:scale(.9);filter:brightness(1.5)}100%{transform:none;filter:none}}
+/* Étapes de personnalisation : la page glisse comme on tourne une page */
+.mod.re.nstep .grp,.mod.re.nstep .chef,.mod.re.nstep .grp~*:not(.sf){animation:stF .34s cubic-bezier(.2,.9,.3,1) both!important}
+.mod.re.nstep.bk .grp,.mod.re.nstep.bk .chef{animation-name:stB!important}
+@keyframes stF{from{opacity:0;transform:translateX(56px)}to{opacity:1;transform:none}}
+@keyframes stB{from{opacity:0;transform:translateX(-56px)}to{opacity:1;transform:none}}
+.mod.re.nstep .stp>button.on{animation:siOn .4s cubic-bezier(.2,.9,.3,1.3) both}
+#m .box{overflow-x:hidden}
+@media(prefers-reduced-motion:reduce){#app.sw .ct *,#app.sw .si.on,.mod.re.nstep .grp,.mod.re.nstep .chef,.mod.re.nstep .stp>button.on{animation:none!important}}
 </style></head><body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="gd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f8e08e"/><stop offset=".5" stop-color="#d99a05"/><stop offset="1" stop-color="#a8710a"/></linearGradient></defs>
 <symbol id="hand" viewBox="0 0 100 120"><g fill="url(#gd)"><rect x="43" y="4" width="14" height="54" rx="7"/><rect x="28" y="16" width="13" height="46" rx="6.5"/><rect x="59" y="16" width="13" height="46" rx="6.5"/><path d="M27 72C13 64 8 50 10 40c1-6 9-6 11 0 2 8 6 14 11 18z"/><path d="M73 72c14-8 19-22 17-32-1-6-9-6-11 0-2 8-6 14-11 18z"/><path d="M26 52h48v26c0 22-10 34-24 40-14-6-24-18-24-40z"/></g><circle cx="50" cy="84" r="11" fill="#fff9e6"/><circle cx="50" cy="84" r="5.5" fill="url(#gd)"/></symbol>
 <symbol id="foot" viewBox="0 0 40 80"><g fill="url(#gd)"><path d="M6 28C2 42 4 62 12 72c6 8 18 6 20-6 2-12 0-26-4-36C24 20 10 18 6 28z"/><circle cx="11" cy="13" r="5.5"/><circle cx="21" cy="8" r="4"/><circle cx="29" cy="10" r="3.5"/><circle cx="35" cy="15" r="3"/><circle cx="38" cy="22" r="2.5"/></g></symbol></svg>
@@ -1029,7 +1052,7 @@ function roll(e,a,b){if(a===b||RM())return;const t0=performance.now();(function 
 function fly(r){if(!r||RM())return;const t=[...document.querySelectorAll('.bar .btn,.cart .tot .btn')].find(e=>e.getClientRects().length);if(!t)return;const q=t.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2,d=document.createElement('i');d.className='fly';d.style.cssText='left:'+(x-18)+'px;top:'+(y-18)+'px';d.textContent='+';document.body.appendChild(d);d.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:'translate('+(q.left+36-x)+'px,'+(q.top+q.height/2-y)+'px) scale(.4)',opacity:.7}],{duration:550,easing:'cubic-bezier(.55,0,.25,1)'}).onfinish=()=>d.remove()}
 function okFx(){const e=$('.ok');if(!e||RM())return;const r=e.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;for(let k=0;k<16;k++){const d=document.createElement('i'),a=k/16*6.283+Math.random()*.4,L=70+Math.random()*50;d.className='sp';d.style.cssText='left:'+cx+'px;top:'+cy+'px;background:'+(k%2?'#f6e27a':'#d4af37');document.body.appendChild(d);d.animate([{transform:'translate(-50%,-50%) scale(1)',opacity:1},{transform:'translate(calc(-50% + '+Math.cos(a)*L+'px),calc(-50% + '+Math.sin(a)*L+'px)) scale(0)',opacity:0}],{duration:800+Math.random()*300,delay:700,easing:'cubic-bezier(.2,.8,.3,1)',fill:'backwards'}).onfinish=()=>d.remove()}}
 function render(){const a=$('#app'),nk=view==='idle'?'idle':view+':'+cat,same=nk===rk,qs=['.side','.ct','.lines'],sv=same?qs.map(s=>{const e=a.querySelector(s);return e?e.scrollTop:0}):[],rw=same?[...a.querySelectorAll('.row2')].map(e=>e.scrollLeft):[],oc=!!a.querySelector('.cart.on');
- if(!same)SQ='';render0();rk=nk;a.classList.toggle('in',!same);
+ if(!same)SQ='';const _pv=(rk.split(':')[0]||''),_pc=rk.split(':')[1]||'',_sw=!same&&_pv===view&&view!=='idle';const _ci=n=>n==='home'?-1:S.cats.findIndex(c=>String(c.id)===String(n));render0();rk=nk;a.classList.toggle('in',!same&&!_sw);a.classList.toggle('sw',_sw);a.classList.toggle('bk',_sw&&_ci(cat)<_ci(_pc));
  if(view==='idle'){lastN=lastT=0;return}
  if(same){qs.forEach((s,i)=>{const e=a.querySelector(s);if(e)e.scrollTop=sv[i]});a.querySelectorAll('.row2').forEach((e,i)=>e.scrollLeft=rw[i]||0)}
  a.querySelectorAll('.side .si').forEach((e,k)=>e.style.setProperty('--i',Math.min(k,10)));
@@ -1120,7 +1143,7 @@ function sc(g,k){const v=lst(g)[k];ed._tap=g+':'+k;if(g==='t')ed.t=v;else if(g==
 function sq(d){ed.q=Math.max(1,ed.q+d);drawSheet()}
 const stepsOf=x=>{const o=oF(x);return['t','r','s','x','b'].filter(k=>o.includes(k)&&lst(k).length)};
 const stLbl=(x,k)=>k==='t'?t('mtype'):k==='r'?t('garn'):k==='s'?t('sauces'):k==='x'?t('supp'):(x.cat.n==='Menus'?t('mdrink'):bReq(x)?t('drink'):t('dropt')+eur(DP())+')');
-function sGo(d,abs){ed._tap='';window._stp=1;const n=stepsOf(find(ed.id)).length;ed.st=Math.max(0,Math.min(n-1,abs!=null?d:(ed.st||0)+d));drawSheet();const b=document.querySelector('.box');if(b)b.scrollTop=0}
+function sGo(d,abs){ed._tap='';window._stp=1;const _o=ed.st||0;const n=stepsOf(find(ed.id)).length;ed.st=Math.max(0,Math.min(n-1,abs!=null?d:(ed.st||0)+d));window._bk=(ed.st<_o);drawSheet();const b=document.querySelector('.box');if(b)b.scrollTop=0}
 function drawSheet(){const x=find(ed.id),ex=EX(),bx=document.querySelector('.box'),st=bx?bx.scrollTop:0;
  const sts=stepsOf(x),n=sts.length,si=Math.min(ed.st||0,Math.max(0,n-1)),k=sts[si],last=si>=n-1;
  const g=(t,k,sel,pr)=>`<div class="grp"><h4>${t}</h4><div class="opg${k==='s'?' sm':''}">${lst(k).map((v,j)=>opTile(k,v,sel,j,pr?(ex[j]||{}).p||0:0)).join('')}</div></div>`;
@@ -1130,7 +1153,7 @@ function drawSheet(){const x=find(ed.id),ex=EX(),bx=document.querySelector('.box
  const nb=document.querySelector('.box');if(nb)nb.scrollTop=st;const sa=document.querySelector('.stp button.on'),sp=sa&&sa.parentNode;if(sp&&getComputedStyle(sp).direction==='ltr')sp.scrollLeft=sa.offsetLeft-(sp.clientWidth-sa.offsetWidth)/2}
 function sok(){const rc=rct(),l={id:ed.id,q:ed.q,s:lst('s').filter(v=>ed.s.includes(v)),r:lst('r').filter(v=>ed.r.includes(v)),x:lst('x').filter(v=>ed.x.includes(v)),t:ed.t||'',b:ed.b};if(ed.i>=0)cart.splice(ed.i,1);const ne=ed.i<0;put(l);ed=null;mod('');bump=l.id;hap();render();fly(rc);if(upOn)upsell();else if(ne)toast(l)}
 let taps=0,tt;function tap(){taps++;clearTimeout(tt);tt=setTimeout(()=>taps=0,2500);if(taps>=5){taps=0;pinAsk()}}
-const mod=h=>{const m=$('#m'),had=!!m.firstChild;m.innerHTML=h?`<div class="mod${had?' re':''}${had&&window._stp?' nstep':''}"><div class="box">${h}</div></div>`:'';if(h&&!had)m.firstChild.classList.add('ent');window._stp=0};
+const mod=h=>{const m=$('#m'),had=!!m.firstChild;m.innerHTML=h?`<div class="mod${had?' re':''}${had&&window._stp?' nstep'+(window._bk?' bk':''):''}"><div class="box">${h}</div></div>`:'';if(h&&!had)m.firstChild.classList.add('ent');window._stp=0};
 let mbd=false;
 document.addEventListener('pointerdown',e=>{mbd=!!(e.target.classList&&e.target.classList.contains('mod'))});
 document.addEventListener('click',e=>{const m=e.target;
