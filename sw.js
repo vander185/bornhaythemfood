@@ -1,5 +1,11 @@
-const V='hf-v1';
-self.addEventListener('install',e=>self.skipWaiting());
+const V='hf-v2';
+self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(['./','index.html'])).catch(()=>{}));self.skipWaiting()});
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V).map(x=>caches.delete(x)))).then(()=>self.clients.claim())));
+// Réseau d'abord ; une page d'erreur (404, maintenance de l'hébergeur…) n'est jamais affichée ni gardée :
+// la borne reste sur sa dernière version qui fonctionne.
 self.addEventListener('fetch',e=>{const r=e.request;if(r.method!=='GET'||new URL(r.url).origin!==location.origin)return;
-e.respondWith(fetch(r).then(x=>{const c=x.clone();caches.open(V).then(h=>h.put(r,c));return x}).catch(()=>caches.match(r).then(m=>m||caches.match('index.html'))))});
+ const nav=r.mode==='navigate';
+ const old=()=>caches.match(r).then(m=>m||(nav?caches.match('index.html'):undefined)).then(m=>m||Response.error());
+ e.respondWith(fetch(r).then(x=>{
+   if(!x.ok)return nav||!/\.json$/.test(new URL(r.url).pathname)?caches.match(r).then(m=>m||(nav?caches.match('index.html'):null)).then(m=>m||x):x;
+   const c=x.clone();caches.open(V).then(h=>h.put(r,c));return x}).catch(old))});
