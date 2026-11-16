@@ -1,4 +1,4 @@
-const V='hf-v3';
+const V='hf-v4';
 self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(['./','index.html'])).catch(()=>{}));self.skipWaiting()});
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V).map(x=>caches.delete(x)))).then(()=>self.clients.claim())));
 // Réseau d'abord ; une page d'erreur (404, maintenance de l'hébergeur…) n'est jamais affichée ni gardée :
