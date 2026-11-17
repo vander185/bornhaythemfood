@@ -1098,7 +1098,7 @@ Boissons|🥤|Thé à la menthe 1 pers. 2.5;Thé à la menthe 2 pers. 4.5;Thé �
 Desserts|🍰|Dame blanche 3.5;Pâtisserie marocaine 3.5;Tiramisu maison 3.5`;
 const SAUCES0=["Mayonnaise","Ketchup","Andalouse","Algérienne","Samouraï","Blanche","Harissa","Américaine","Brazil","Bicky","Mammouth","Tartare","Cocktail","Curry ketchup","Sauce à l’ail","Barbecue","Moutarde","Piquante","Pili-pili","Sweet chili","Pita"],CRUD0=["Salade","Tomates","Oignons","Concombre","Maïs","Carottes","Chou blanc","Olives","Poivrons"],DRINKS0=["Coca-Cola","Coca-Cola Zéro","Fanta","Fanta Citron","Sprite","Schweppes Lemon","Schweppes Agrumes","Ice Tea","Orangina","Eau"];
 const OPT0={'Dürüms':'srxb','Sandwichs':'srxb','Panini':'srxb','Tacos':'srxb','Kapsalon':'srxb','Menus':'srxb','Bicky':'srxb','Assiettes':'sxb','Grillades':'sxb','Salades':'srb','Frites & plus':'sb','Spécialités':'b'};
-const NOS='Sans sauce',NOC='Sans crudités',ALLC='Toutes les crudités';
+const NOX='Non merci',NOS='Sans sauce',NOC='Sans crudités',ALLC='Toutes les crudités';
 const LANGS=[['fr','Français','🇫🇷'],['nl','Nederlands','🇳🇱'],['en','English','🇬🇧'],['es','Español','🇪🇸'],['ar','العربية','🇸🇦'],['de','Deutsch','🇩🇪']];
 const TR={
 tag:['Cuisine halal · Commandez ici','Halal keuken · Bestel hier','Halal cuisine · Order here','Cocina halal · Pide aquí','مطبخ حلال · اطلب هنا','Halal-Küche · Hier bestellen'],
@@ -1130,7 +1130,8 @@ sauces:["Sauces", "Sauzen", "Sauces", "Salsas", "الصلصات", "Saucen"],
 garn:["Garniture", "Groenten", "Salad & veg", "Verduras", "الخضار", "Salat & Gemüse"],
 extra:['Extra','Extra','Extra','Extra','إضافي','Extra'],
 supp:["Suppléments", "Extra’s", "Extras", "Suplementos", "إضافات", "Extras"],
-nos:["Sans sauce", "Zonder saus", "No sauce", "Sin salsa", "بدون صلصة", "Ohne Sauce"],
+nox:["Non merci","Nee, bedankt","No thanks","No, gracias","لا، شكرًا","Nein, danke"],
+ nos:["Sans sauce", "Zonder saus", "No sauce", "Sin salsa", "بدون صلصة", "Ohne Sauce"],
 noc:["Sans crudités", "Zonder groenten", "No salad or veg", "Sin verduras", "بدون خضار", "Ohne Salat & Gemüse"],
 allc:["Toutes les crudités", "Alle groenten", "Everything", "Todas las verduras", "كل الخضار", "Alles dabei"],
 mtype:["Dürüm ou Sandwich","Dürüm of broodje","Dürüm or sandwich","Dürüm o sándwich","دوروم أو ساندويتش","Dürüm oder Sandwich"],
@@ -1191,7 +1192,7 @@ const t=k=>(TR[k]||[k])[LI()]||(TR[k]||[k])[0];
 const cn=c=>(CATN[c.n]||[c.n])[LI()]||c.n;
 const MODEK={'Sur place':'here','À emporter':'take'};
 const WD={"Salade": ["Sla", "Lettuce", "Lechuga", "خس", "Salat"], "Tomates": ["Tomaten", "Tomatoes", "Tomates", "طماطم", "Tomaten"], "Oignons": ["Uien", "Onions", "Cebolla", "بصل", "Zwiebeln"], "Concombre": ["Komkommer", "Cucumber", "Pepino", "خيار", "Gurke"], "Maïs": ["Maïs", "Sweetcorn", "Maíz", "ذرة", "Mais"], "Carottes": ["Wortelen", "Carrots", "Zanahorias", "جزر", "Karotten"], "Chou blanc": ["Witte kool", "White cabbage", "Col blanca", "ملفوف أبيض", "Weißkohl"], "Olives": ["Olijven", "Olives", "Aceitunas", "زيتون", "Oliven"], "Poivrons": ["Paprika", "Peppers", "Pimientos", "فلفل رومي", "Paprika"], "Eau": ["Water", "Water", "Agua", "ماء", "Wasser"], "Mayonnaise": ["Mayonaise", "Mayonnaise", "Mayonesa", "مايونيز", "Mayonnaise"], "Blanche": ["Witte saus", "White sauce", "Salsa blanca", "صلصة بيضاء", "Weiße Sauce"], "Sauce à l’ail": ["Knoflooksaus", "Garlic sauce", "Salsa de ajo", "صلصة الثوم", "Knoblauchsauce"], "Moutarde": ["Mosterd", "Mustard", "Mostaza", "خردل", "Senf"], "Piquante": ["Pikante saus", "Hot sauce", "Salsa picante", "صلصة حارة", "Scharfe Sauce"], "Tartare": ["Tartaarsaus", "Tartare", "Tártara", "تارتار", "Tartar-Sauce"]};
-const ov=v=>v===NOS?t('nos'):v===NOC?t('noc'):v===ALLC?t('allc'):(LI()&&WD[v]?WD[v][LI()-1]:v);
+const ov=v=>v===NOX?t('nox'):v===NOS?t('nos'):v===NOC?t('noc'):v===ALLC?t('allc'):(LI()&&WD[v]?WD[v][LI()-1]:v);
 let L='fr';
 function applyLang(){document.documentElement.lang=L;document.documentElement.dir=L==='ar'?'rtl':'ltr'}
 function setLang(l){L=l;applyLang();render()}
@@ -1355,7 +1356,7 @@ let ed=null;
 const CRUNO=['Olives','Poivrons'];
 const cruAll=()=>S.opt.crud.filter(v=>!CRUNO.some(x=>_nk(x)===_nk(v)));
 const isAllCru=a=>{const c=cruAll();return c.length>0&&c.every(v=>a.includes(v))};
-const lst=g=>g==='t'?MTYPES:g==='s'?[NOS,...sauceOrder()]:g==='r'?[NOC,ALLC,...S.opt.crud]:g==='x'?EX().map(e=>e.n):S.opt.drinks;
+const lst=g=>g==='t'?MTYPES:g==='s'?[NOS,...sauceOrder()]:g==='r'?[NOC,ALLC,...S.opt.crud]:g==='x'?[NOX,...EX().map(e=>e.n)]:[NOX,...S.opt.drinks];
 function openSheet(id,i){const x=find(id),l=i>=0?cart[i]:{q:1,s:[],r:[],x:[],t:oF(x).includes('t')?MTYPES[0]:'',b:oF(x).includes('b')&&bReq(x)?(S.opt.drinks[0]||''):''};ed={id,i,q:l.q,t:l.t||(oF(x).includes('t')?MTYPES[0]:''),s:[...l.s],r:[...l.r],x:[...l.x],b:l.b,st:0};drawSheet()}
 function tog(g,v){let a=ed[g];const on=a.includes(v),C=S.opt.crud;
  if(g==='s')a=v===NOS?(on?[]:[v]):(on?a.filter(z=>z!==v):[...a.filter(z=>z!==NOS),v]);
@@ -1370,14 +1371,14 @@ function sideInit(a){return;const sd=a.querySelector('.side');const w=sd.parentN
  sd.addEventListener('scroll',upd,{passive:true});['touchmove','wheel','pointerdown'].forEach(ev=>sd.addEventListener(ev,swMark,{passive:true}));
  upd();setTimeout(upd,120);
  if(!nudged&&!swiped&&cat==='home'){nudged=true;const x0=sd.scrollLeft,dr=L==='ar'?-1:1;setTimeout(()=>{if(swiped||$('.side')!==sd)return;sd.scrollTo({left:x0+90*dr,behavior:'smooth'});setTimeout(()=>{if(!swiped)sd.scrollTo({left:x0,behavior:'smooth'})},900)},1200)}}
-function sc(g,k){const v=lst(g)[k];ed._tap=g+':'+k;if(g==='t')ed.t=v;else if(g==='b')ed.b=(!bReq(find(ed.id))&&ed.b===v)?'':v;else tog(g,v);drawSheet()}
+function sc(g,k){const v=lst(g)[k];ed.no=ed.no||{};if(v===NOX){if(g==='x')ed.x=[];else ed.b='';ed.no[g]=true;const n=stepsOf(find(ed.id)).length;if((ed.st||0)<n-1){sGo(1);return}drawSheet();return}if(g==='x'||g==='b')ed.no[g]=false;ed._tap=g+':'+k;if(g==='t')ed.t=v;else if(g==='b')ed.b=(!bReq(find(ed.id))&&ed.b===v)?'':v;else tog(g,v);drawSheet()}
 function sq(d){ed.q=Math.max(1,ed.q+d);drawSheet()}
-const stepsOf=x=>{const o=oF(x);return['t','r','s','x','b'].filter(k=>o.includes(k)&&lst(k).length)};
+const stepsOf=x=>{const o=oF(x);return['t','r','s','x','b'].filter(k=>o.includes(k)&&lst(k).filter(v=>v!==NOX).length)};
 const stLbl=(x,k)=>k==='t'?t('mtype'):k==='r'?t('garn'):k==='s'?t('sauces'):k==='x'?t('supp'):(x.cat.n==='Menus'?t('mdrink'):bReq(x)?t('drink'):t('dropt')+eur(DP())+')');
 function sGo(d,abs){ed._tap='';window._stp=1;const _o=ed.st||0;const n=stepsOf(find(ed.id)).length;ed.st=Math.max(0,Math.min(n-1,abs!=null?d:(ed.st||0)+d));window._bk=(ed.st<_o);drawSheet();const b=document.querySelector('.box');if(b)b.scrollTop=0}
 function drawSheet(){const x=find(ed.id),ex=EX(),bx=document.querySelector('.box'),st=bx?bx.scrollTop:0;
  const sts=stepsOf(x),n=sts.length,si=Math.min(ed.st||0,Math.max(0,n-1)),k=sts[si],last=si>=n-1;
- const g=(t,k,sel,pr)=>`<div class="grp"><h4>${t}</h4><div class="opg${k==='s'?' sm':''}">${lst(k).map((v,j)=>opTile(k,v,sel,j,pr?(ex[j]||{}).p||0:0)).join('')}</div></div>`;
+ const g=(t,k,sel,pr)=>`<div class="grp"><h4>${t}</h4><div class="opg${k==='s'?' sm':''}">${lst(k).map((v,j)=>opTile(k,v,sel,j,pr?(ex.find(e=>e.n===v)||{}).p||0:0)).join('')}</div></div>`;
  const rs=[...ed.r,...(isAllCru(ed.r)?[ALLC]:[])];
  const sum=x.p+(ed.b&&!bReq(x)?DP():0)+ed.x.reduce((s,n)=>s+((ex.find(e=>e.n===n)||{}).p||0),0);
  mod(`<div class="mh"><div><h3>${esc(full(x))}</h3><p class="note" style="margin:2px 0 0">${eur(x.p)}</p>${sheetInfo(x)}</div><button class="btn g x" onclick="ed=null;if(upOn)upsell();else mod(\'\')">✕</button></div>${n>1?`<div class="stp">${sts.map((z,j)=>`<button class="${j===si?'on':j<si?'dn':''}" onclick="sGo(${j},1)"><i>${j<si?'✓':j+1}</i><span>${esc(stLbl(x,z).replace(/\s*\(.*$/,''))}</span></button>`).join('')}</div>`:''}${k==='s'?chefBtn():''}${k?g((n>1?(si+1)+'/'+n+' · ':'')+stLbl(x,k),k,k==='t'?[ed.t]:k==='r'?rs:k==='s'?ed.s:k==='x'?ed.x:[ed.b],k==='x'?1:0):''}<div class="sf">${last?`<div class="st"><button class="qb" onclick="sq(-1)">−</button><b>${ed.q}</b><button class="qb" onclick="sq(1)">+</button></div>`:''}${si>0?`<button class="btn g" onclick="sGo(-1)">‹</button>`:''}${last?`<button class="btn" onclick="sok()">${ed.i>=0?t('upd'):t('addc')} · ${eur(sum*ed.q)}</button>`:`<button class="btn" onclick="sGo(1)">${t('next')} ›</button>`}</div>`);
@@ -1778,8 +1779,8 @@ const GTL={d:['Douce','Mild','Mild','Suave','خفيفة','Mild'],ds:['Douce et s
 const GTS=_mk({"Mayonnaise":[0,'d'],"Ketchup":[0,'ds'],"Andalouse":[0,'d'],"Algérienne":[2,'r'],"Samouraï":[3,'tp'],"Blanche":[0,'d'],"Harissa":[3,'tp'],"Américaine":[0,'da'],"Brazil":[0,'df'],"Bicky":[1,'a'],"Mammouth":[2,'r'],"Tartare":[0,'a'],"Cocktail":[0,'ds'],"Curry ketchup":[1,'de'],"Sauce à l’ail":[0,'dl'],"Ail":[0,'dl'],"Barbecue":[0,'fs'],"Moutarde":[2,'p'],"Piquante":[2,'p'],"Pili-pili":[3,'tp'],"Sweet chili":[1,'sp'],"Pita":[0,'dh']});
 const gtOf=n=>GTS[_nk(n)]||GTS[_nk(String(n||'').replace(/^sauce /i,''))]||null;
 const gtHtml=n=>{const g=gtOf(n);if(!g)return '';const li=Math.max(0,LANGS.findIndex(l=>l[0]===L));return `<em class="gt h${g[0]}">${g[0]?'🌶️'.repeat(g[0])+' ':''}${GTL[g[1]][li]||GTL[g[1]][0]}</em>`};
-function opTile(k,v,sel,j,pr){const n=OPK(v),dk=k==='b'?drkOf(v):'',sp=v===NOS||v===NOC,em=sp?'🚫':v===ALLC?'🥗':(OPE[n]||(k==='t'?(v===MTYPES[0]?'🌯':'🥖'):k==='s'?'🫙':k==='b'?'🥤':'🍽️')),p=!sp&&(k==='s'?OPS[n]:OPI[n]),base=((S.hq&&S.hq.site)||'https://www.haythemfood.com').replace(/\/+$/,'');
- return `<button class="op ${sel.includes(v)?'on':''}${ed&&ed._tap===k+':'+j?' nw':''}" onclick="sc('${k}',${j})"><i class="opi${dk?' dk':''}"><em>${k==='s'&&!sp?sauceSvg(v):em}</em>${dk?`<img src="${dk}" alt="">`:p?`<img src="${p}" decoding="sync" alt="" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='${base}/${p}'}else this.remove()">`:''}</i>${k==='s'&&sauceTop(v)?'<b class="tp">★</b>':''}<span>${esc(ov(v))}${k==='s'&&!sp?gtHtml(v):''}</span>${pr?`<small>+${eur(pr)}</small>`:''}</button>`}
+function opTile(k,v,sel,j,pr){const n=OPK(v),dk=k==='b'?drkOf(v):'',sp=v===NOS||v===NOC||v===NOX,em=sp?'🚫':v===ALLC?'🥗':(OPE[n]||(k==='t'?(v===MTYPES[0]?'🌯':'🥖'):k==='s'?'🫙':k==='b'?'🥤':'🍽️')),p=!sp&&(k==='s'?OPS[n]:OPI[n]),base=((S.hq&&S.hq.site)||'https://www.haythemfood.com').replace(/\/+$/,'');
+ return `<button class="op${v===NOX?' nox':''} ${(v===NOX?!!(ed&&ed.no&&ed.no[k]):sel.includes(v))?'on':''}${ed&&ed._tap===k+':'+j?' nw':''}" onclick="sc('${k}',${j})"><i class="opi${dk?' dk':''}"><em>${k==='s'&&!sp?sauceSvg(v):em}</em>${dk?`<img src="${dk}" alt="">`:p?`<img src="${p}" decoding="sync" alt="" onerror="if(!this.dataset.f){this.dataset.f=1;this.src='${base}/${p}'}else this.remove()">`:''}</i>${k==='s'&&sauceTop(v)?'<b class="tp">★</b>':''}<span>${esc(ov(v))}${k==='s'&&!sp?gtHtml(v):''}</span>${pr?`<small>+${eur(pr)}</small>`:''}</button>`}
 /* RÉCEPTION DES COMMANDES (WhatsApp / Telegram / ntfy) */
 const NF=()=>S.nf||(S.nf={wa:{on:false,phone:'',key:''},tg:{on:false,token:'',chat:''},nt:{on:false,topic:''},q:[]}),NFL={wa:'WhatsApp',tg:'Telegram',nt:'ntfy'};
 const orderTxt=o=>`🧾 Commande N° ${o.n} · ${S.shop}\n${o.mode} · ${MN[o.m]} · ${o.paid?'PAYÉ ✅':'À PAYER À LA CAISSE 💶'}\n${o.ts}\n\n${o.lines.map(l=>`${l.q}× ${l.n}${l.d&&l.d.length?'\n   '+l.d.join(' · '):''}`).join('\n')}\n\nTotal : ${eur(o.total)}`;
