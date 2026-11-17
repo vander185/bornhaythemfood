@@ -1766,9 +1766,9 @@ async function hqTest(){const m=$('#hq_msg');m.textContent='Envoi…';
  const p={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),no:0,t:Date.now(),u:Date.now(),st:'new',mode:'À emporter',pay:'Test borne',nom:'',tot:'0,00 €',l:[{q:1,n:'TEST BORNE · ne pas préparer',d:[]}]};
  try{const r=await hqSend(p,0);m.textContent='✓ Reçu par le serveur : ticket test N° '+r.no+'. Vérifiez l’écran cuisine (marquez-le servi après le test).'}
  catch(e){m.textContent='Échec : '+(e&&e.message||e)+(navigator.onLine?'':' (pas de connexion internet)')}}
-const hqOpen=h=>window.open(HQ().site.replace(/\/+$/,'')+'/#'+h,'_blank');
+const hqOpen=h=>window.open(HQ().site.replace(/\/+$/,'')+'/'+h+'/','_blank');
 function aHq(){const H=HQ(),q=H.q.length;
- return `<div class="sec"><h3>Écrans cuisine &amp; clients (haythemfood.com)</h3><p class="note">Chaque commande de la borne est envoyée au même serveur que le site : elle apparaît sur l’écran cuisine (<b>#cuisine</b>) et sur l’écran clients (<b>#file</b>), avec le même numéro. Sans internet, la commande est renvoyée dès que le réseau revient.</p>
+ return `<div class="sec"><h3>Écrans cuisine &amp; clients (haythemfood.com)</h3><p class="note">Chaque commande de la borne est envoyée au même serveur que le site : elle apparaît sur l’écran cuisine (<b>haythemfood.com/cuisine</b>) et sur l’écran clients (<b>haythemfood.com/file</b>), avec le même numéro. Sans internet, la commande est renvoyée dès que le réseau revient.</p>
  <label class="tg"><input type="checkbox" ${H.on?'checked':''} onchange="hqS('on',this.checked);admin()">Envoyer les commandes de la borne à la cuisine</label>
  <label class="fld">Adresse du site<input value="${esc(H.site)}" onchange="hqS('site',this.value.trim())"></label>
  <label class="fld">Base de commandes du site (Firebase)<input value="${esc(H.db)}" onchange="hqS('db',this.value.trim())"></label>
