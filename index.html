@@ -881,6 +881,15 @@ body:has(#m .box) #m{-webkit-backdrop-filter:none!important;backdrop-filter:none
 .mod.re.nstep .stp>button.dn.jd i{animation:ckPop .5s cubic-bezier(.2,.9,.3,1.4) .1s both}
 .mod.re.nstep .stp>button.on{animation:siOn .4s cubic-bezier(.2,.9,.3,1.3) both,chRing 1s ease-out .3s}
 @media(prefers-reduced-motion:reduce){.spb i,.mod.re.nstep .grp,.mod.re.nstep .grp h4,.mod.re.nstep .grp h4::after,.mod.re.nstep .opg .op,.mod.re.nstep .stp>button{animation:none!important;filter:none!important}}
+
+/* Accueil : centré quand il y a la place, sinon commence en haut (le logo n'est plus coupé sur petit écran) */
+.idle{justify-content:flex-start!important}.idle>.lgw{margin-top:auto!important}.idle::after{content:"";display:block;flex:none;margin-top:auto}
+/* Accueil : tout tient dans l'écran, du téléphone à la TV (logo adapté à la hauteur) */
+.idle .hfl{max-height:max(110px,calc(100dvh - 730px))!important}.idle{gap:clamp(8px,1.4vh,18px)!important}@media (max-height:780px){.idle .tut0,.idle .tuto{display:none!important}.idle .hfl{max-height:max(100px,calc(100dvh - 450px))!important}}
+/* Très petit téléphone (320-380 px) : menu latéral plus étroit, une colonne de plats (noms et prix lisibles en entier) */
+@media(max-width:380px){.sidew,.side{width:80px!important;min-width:80px!important;max-width:80px!important;flex-basis:80px!important}.side *{font-size:11px}.tiles,.grid{grid-template-columns:1fr!important}}
+/* Petit téléphone : bouton « Voir ma commande » sur une ligne, fiche du plat plus compacte */
+@media(max-width:380px){.bar .btn{font-size:15px!important;gap:8px;padding-left:16px!important;padding-right:16px!important}.bar .btn span{white-space:nowrap}.mod .mh h2,.mod .mh h3{font-size:22px!important}.mod .dsc{-webkit-line-clamp:2!important;display:-webkit-box!important;-webkit-box-orient:vertical!important;overflow:hidden!important;font-size:14px!important}}
 </style></head><body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="gd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f8e08e"/><stop offset=".5" stop-color="#d99a05"/><stop offset="1" stop-color="#a8710a"/></linearGradient></defs>
 <symbol id="hand" viewBox="0 0 100 120"><g fill="url(#gd)"><rect x="43" y="4" width="14" height="54" rx="7"/><rect x="28" y="16" width="13" height="46" rx="6.5"/><rect x="59" y="16" width="13" height="46" rx="6.5"/><path d="M27 72C13 64 8 50 10 40c1-6 9-6 11 0 2 8 6 14 11 18z"/><path d="M73 72c14-8 19-22 17-32-1-6-9-6-11 0-2 8-6 14-11 18z"/><path d="M26 52h48v26c0 22-10 34-24 40-14-6-24-18-24-40z"/></g><circle cx="50" cy="84" r="11" fill="#fff9e6"/><circle cx="50" cy="84" r="5.5" fill="url(#gd)"/></symbol>
 <symbol id="foot" viewBox="0 0 40 80"><g fill="url(#gd)"><path d="M6 28C2 42 4 62 12 72c6 8 18 6 20-6 2-12 0-26-4-36C24 20 10 18 6 28z"/><circle cx="11" cy="13" r="5.5"/><circle cx="21" cy="8" r="4"/><circle cx="29" cy="10" r="3.5"/><circle cx="35" cy="15" r="3"/><circle cx="38" cy="22" r="2.5"/></g></symbol></svg>
