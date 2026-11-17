@@ -858,6 +858,29 @@ body .op.on::after{filter:none!important}
 body:has(#m .box) #app *,body:has(#m .box) #app *::before,body:has(#m .box) #app *::after{animation-play-state:paused!important}
 body:has(#m .box) #m{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 .rvq{display:flex;align-items:center;justify-content:center;gap:14px;background:#fff8e1;border:1px solid #f0dca0;border-radius:14px;padding:10px 14px;text-align:start;color:#5a3d00}.rvq svg{flex:none;border-radius:6px}.rvq b{font-size:17px}.rvq small{color:#6b4a00}
+
+/* ===== Transitions entre étapes (Garniture, Sauces, Suppléments, Boisson…) ===== */
+.spb{position:relative;height:6px;margin:10px 4px 2px;border-radius:9px;background:#d4af3726;overflow:hidden}
+.spb i{position:absolute;inset:0 auto 0 0;width:var(--p);border-radius:9px;background:linear-gradient(90deg,#b8860b,#f3cf63 55%,#fff3c4 75%,#d4af37);background-size:200% 100%;box-shadow:0 0 10px #f3cf6399;animation:spbG .55s cubic-bezier(.2,.9,.3,1) both,spbS 2.4s linear .55s infinite}
+[dir=rtl] .spb i{inset:0 0 0 auto}
+@keyframes spbG{from{width:var(--p0)}to{width:var(--p)}}
+@keyframes spbS{to{background-position:-200% 0}}
+@keyframes stIn{0%{opacity:0;transform:translateX(var(--sx,60px)) scale(.97);filter:blur(4px)}60%{filter:blur(0)}100%{opacity:1;transform:none;filter:none}}
+@keyframes ttIn{from{opacity:0;transform:translateY(-10px);letter-spacing:.06em}to{opacity:1;transform:none}}
+@keyframes ulIn{0%{transform:scaleX(0);opacity:1}55%{transform:scaleX(1);opacity:1}100%{transform:scaleX(1);opacity:0}}
+@keyframes tlIn{0%{opacity:0;transform:translateY(18px) scale(.86) rotate(-1.5deg)}65%{opacity:1;transform:translateY(-3px) scale(1.03)}100%{opacity:1;transform:none}}
+@keyframes ckPop{0%{transform:scale(.2) rotate(-90deg)}60%{transform:scale(1.35) rotate(8deg)}100%{transform:none}}
+@keyframes chRing{0%{box-shadow:0 0 0 0 #f3cf63aa}100%{box-shadow:0 0 0 12px #f3cf6300}}
+
+.mod.re.nstep .grp{--sx:64px;animation:stIn .45s cubic-bezier(.2,.9,.3,1) both!important}
+.mod.re.nstep.bk .grp{--sx:-64px}
+.mod.re.nstep .grp h4{position:relative;display:inline-block;animation:ttIn .45s cubic-bezier(.2,.9,.3,1) .05s both}
+.mod.re.nstep .grp h4::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:3px;border-radius:3px;background:linear-gradient(90deg,#d4af37,#f3cf63,#d4af3700);transform-origin:0 50%;animation:ulIn 1.3s cubic-bezier(.2,.9,.3,1) .15s both}
+.mod.re.nstep .opg .op{animation:tlIn .5s cubic-bezier(.2,.9,.3,1) both}
+.mod.re.nstep .opg .op:nth-child(2){animation-delay:.03s}.mod.re.nstep .opg .op:nth-child(3){animation-delay:.06s}.mod.re.nstep .opg .op:nth-child(4){animation-delay:.09s}.mod.re.nstep .opg .op:nth-child(5){animation-delay:.12s}.mod.re.nstep .opg .op:nth-child(6){animation-delay:.15s}.mod.re.nstep .opg .op:nth-child(7){animation-delay:.18s}.mod.re.nstep .opg .op:nth-child(8){animation-delay:.21s}.mod.re.nstep .opg .op:nth-child(n+9){animation-delay:.24s}
+.mod.re.nstep .stp>button.dn.jd i{animation:ckPop .5s cubic-bezier(.2,.9,.3,1.4) .1s both}
+.mod.re.nstep .stp>button.on{animation:siOn .4s cubic-bezier(.2,.9,.3,1.3) both,chRing 1s ease-out .3s}
+@media(prefers-reduced-motion:reduce){.spb i,.mod.re.nstep .grp,.mod.re.nstep .grp h4,.mod.re.nstep .grp h4::after,.mod.re.nstep .opg .op,.mod.re.nstep .stp>button{animation:none!important;filter:none!important}}
 </style></head><body><svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="gd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f8e08e"/><stop offset=".5" stop-color="#d99a05"/><stop offset="1" stop-color="#a8710a"/></linearGradient></defs>
 <symbol id="hand" viewBox="0 0 100 120"><g fill="url(#gd)"><rect x="43" y="4" width="14" height="54" rx="7"/><rect x="28" y="16" width="13" height="46" rx="6.5"/><rect x="59" y="16" width="13" height="46" rx="6.5"/><path d="M27 72C13 64 8 50 10 40c1-6 9-6 11 0 2 8 6 14 11 18z"/><path d="M73 72c14-8 19-22 17-32-1-6-9-6-11 0-2 8-6 14-11 18z"/><path d="M26 52h48v26c0 22-10 34-24 40-14-6-24-18-24-40z"/></g><circle cx="50" cy="84" r="11" fill="#fff9e6"/><circle cx="50" cy="84" r="5.5" fill="url(#gd)"/></symbol>
 <symbol id="foot" viewBox="0 0 40 80"><g fill="url(#gd)"><path d="M6 28C2 42 4 62 12 72c6 8 18 6 20-6 2-12 0-26-4-36C24 20 10 18 6 28z"/><circle cx="11" cy="13" r="5.5"/><circle cx="21" cy="8" r="4"/><circle cx="29" cy="10" r="3.5"/><circle cx="35" cy="15" r="3"/><circle cx="38" cy="22" r="2.5"/></g></symbol></svg>
@@ -1380,13 +1403,13 @@ function sc(g,k){const v=lst(g)[k];ed.no=ed.no||{};if(v===NOX){if(g==='x')ed.x=[
 function sq(d){ed.q=Math.max(1,ed.q+d);drawSheet()}
 const stepsOf=x=>{const o=oF(x);return['t','r','s','x','b'].filter(k=>o.includes(k)&&lst(k).filter(v=>v!==NOX).length)};
 const stLbl=(x,k)=>k==='t'?t('mtype'):k==='r'?t('garn'):k==='s'?t('sauces'):k==='x'?t('supp'):(x.cat.n==='Menus'?t('mdrink'):bReq(x)?t('drink'):t('dropt')+eur(DP())+')');
-function sGo(d,abs){ed._tap='';window._stp=1;const _o=ed.st||0;const n=stepsOf(find(ed.id)).length;ed.st=Math.max(0,Math.min(n-1,abs!=null?d:(ed.st||0)+d));window._bk=(ed.st<_o);drawSheet();const b=document.querySelector('.box');if(b)b.scrollTop=0}
+function sGo(d,abs){ed._tap='';window._stp=1;const _o=ed.st||0;window._jd=_o;const n=stepsOf(find(ed.id)).length;ed.st=Math.max(0,Math.min(n-1,abs!=null?d:(ed.st||0)+d));window._bk=(ed.st<_o);drawSheet();const b=document.querySelector('.box');if(b)b.scrollTop=0}
 function drawSheet(){const x=find(ed.id),ex=EX(),bx=document.querySelector('.box'),st=bx?bx.scrollTop:0;
  const sts=stepsOf(x),n=sts.length,si=Math.min(ed.st||0,Math.max(0,n-1)),k=sts[si],last=si>=n-1;
  const g=(t,k,sel,pr)=>`<div class="grp"><h4>${t}</h4><div class="opg${k==='s'?' sm':''}">${lst(k).map((v,j)=>opTile(k,v,sel,j,pr?(ex.find(e=>e.n===v)||{}).p||0:0)).join('')}</div></div>`;
  const rs=[...ed.r,...(isAllCru(ed.r)?[ALLC]:[])];
  const sum=x.p+(ed.b&&!bReq(x)?DP():0)+ed.x.reduce((s,n)=>s+((ex.find(e=>e.n===n)||{}).p||0),0);
- mod(`<div class="mh"><div><h3>${esc(full(x))}</h3><p class="note" style="margin:2px 0 0">${eur(x.p)}</p>${sheetInfo(x)}</div><button class="btn g x" onclick="ed=null;if(upOn)upsell();else mod(\'\')">✕</button></div>${n>1?`<div class="stp">${sts.map((z,j)=>`<button class="${j===si?'on':j<si?'dn':''}" onclick="sGo(${j},1)"><i>${j<si?'✓':j+1}</i><span>${esc(stLbl(x,z).replace(/\s*\(.*$/,''))}</span></button>`).join('')}</div>`:''}${k==='s'?chefBtn():''}${k?g((n>1?(si+1)+'/'+n+' · ':'')+stLbl(x,k),k,k==='t'?[ed.t]:k==='r'?rs:k==='s'?ed.s:k==='x'?ed.x:[ed.b],k==='x'?1:0):''}<div class="sf">${last?`<div class="st"><button class="qb" onclick="sq(-1)">−</button><b>${ed.q}</b><button class="qb" onclick="sq(1)">+</button></div>`:''}${si>0?`<button class="btn g" onclick="sGo(-1)">‹</button>`:''}${last?`<button class="btn" onclick="sok()">${ed.i>=0?t('upd'):t('addc')} · ${eur(sum*ed.q)}</button>`:`<button class="btn" onclick="sGo(1)">${t('next')} ›</button>`}</div>`);
+ mod(`<div class="mh"><div><h3>${esc(full(x))}</h3><p class="note" style="margin:2px 0 0">${eur(x.p)}</p>${sheetInfo(x)}</div><button class="btn g x" onclick="ed=null;if(upOn)upsell();else mod(\'\')">✕</button></div>${n>1?`<div class="stp">${sts.map((z,j)=>`<button class="${j===si?'on':j<si?'dn'+(window._stp&&j===window._jd?' jd':''):''}" onclick="sGo(${j},1)"><i>${j<si?'✓':j+1}</i><span>${esc(stLbl(x,z).replace(/\s*\(.*$/,''))}</span></button>`).join('')}</div>${(()=>{const p=Math.round((si+1)/n*100),p0=window._lpE===ed&&window._lp!=null?window._lp:0;window._lpE=ed;window._lp=p;return `<div class="spb" style="--p0:${p0}%;--p:${p}%"><i></i></div>`})()}`:''}${k==='s'?chefBtn():''}${k?g((n>1?(si+1)+'/'+n+' · ':'')+stLbl(x,k),k,k==='t'?[ed.t]:k==='r'?rs:k==='s'?ed.s:k==='x'?ed.x:[ed.b],k==='x'?1:0):''}<div class="sf">${last?`<div class="st"><button class="qb" onclick="sq(-1)">−</button><b>${ed.q}</b><button class="qb" onclick="sq(1)">+</button></div>`:''}${si>0?`<button class="btn g" onclick="sGo(-1)">‹</button>`:''}${last?`<button class="btn" onclick="sok()">${ed.i>=0?t('upd'):t('addc')} · ${eur(sum*ed.q)}</button>`:`<button class="btn" onclick="sGo(1)">${t('next')} ›</button>`}</div>`);
  const nb=document.querySelector('.box');if(nb)nb.scrollTop=st;const sa=document.querySelector('.stp button.on'),sp=sa&&sa.parentNode;if(sp&&getComputedStyle(sp).direction==='ltr')sp.scrollLeft=sa.offsetLeft-(sp.clientWidth-sa.offsetWidth)/2}
 function sok(){const rc=rct(),l={id:ed.id,q:ed.q,s:lst('s').filter(v=>ed.s.includes(v)),r:lst('r').filter(v=>ed.r.includes(v)),x:lst('x').filter(v=>ed.x.includes(v)),t:ed.t||'',b:ed.b};if(ed.i>=0)cart.splice(ed.i,1);const ne=ed.i<0;put(l);ed=null;mod('');bump=l.id;hap();render();fly(rc);if(upOn)upsell();else if(ne)toast(l)}
 let taps=0,tt;function tap(){taps++;clearTimeout(tt);tt=setTimeout(()=>taps=0,2500);if(taps>=5){taps=0;pinAsk()}}
