@@ -1349,7 +1349,7 @@ function promoHtml(tiles){const Sl=promoSlides(tiles),fb=(tiles[0]||S.cats[0]).i
 let promoT=0;
 function promoStart(){clearInterval(promoT);const p=document.querySelector('.promo[data-n]');if(!p)return;const n=+p.dataset.n;if(n<2)return;promoT=setInterval(()=>{if(!document.body.contains(p)){clearInterval(promoT);return}const k=(+p.dataset.cur+1)%n;p.dataset.cur=k;p.querySelectorAll('.ps').forEach((e,j)=>e.classList.toggle('on',j===k));p.querySelectorAll('.pd i').forEach((e,j)=>e.classList.toggle('on',j===k))},5500)}
 function promoTap(p){const c=(p.dataset.c||'').split(',')[+p.dataset.cur||0];cat=c||p.dataset.f;render()}
-const APP_V='27',hhmm=()=>new Date().toLocaleTimeString('fr-BE',{hour:'2-digit',minute:'2-digit'});let appSig=null;
+const APP_V='28',hhmm=()=>new Date().toLocaleTimeString('fr-BE',{hour:'2-digit',minute:'2-digit'});let appSig=null;
 async function sigOf(u){try{const r=await fetch(u,{method:'HEAD',cache:'no-store'});if(!r.ok)return'';return(r.headers.get('etag')||r.headers.get('last-modified')||'')+'|'+(r.headers.get('content-length')||'')}catch(e){return''}}
 function applyCfg(c){if(!c||!Array.isArray(c.cats)||!c.cats.length)return false;const old=S.cats;
  S.cats=c.cats.filter(rc=>rc&&rc.n).map(rc=>{const oc=old.find(x=>x.n===rc.n)||{id:uid('c'),e:'🍽️',items:[]};return{...oc,n:rc.n,e:rc.e||oc.e,items:(rc.items||[]).filter(x=>x&&x.n).map(ri=>{const oi=oc.items.find(x=>x.n===ri.n)||{id:uid('i')};return{...oi,n:ri.n,p:+ri.p||0,img:ri.img||oi.img||'',sug:ri.sug!=null?!!ri.sug:!!oi.sug}})}});
@@ -1429,7 +1429,8 @@ function drawSheet(){const x=find(ed.id),ex=EX(),bx=document.querySelector('.box
  const sum=x.p+(ed.b&&!bReq(x)?DP():0)+ed.x.reduce((s,n)=>s+((ex.find(e=>e.n===n)||{}).p||0),0);
  mod(`<div class="mh"><div><h3>${esc(full(x))}</h3><p class="note" style="margin:2px 0 0">${eur(x.p)}</p>${sheetInfo(x)}</div><button class="btn g x" onclick="ed=null;if(upOn)upsell();else mod(\'\')">✕</button></div>${n>1?`<div class="stp">${sts.map((z,j)=>`<button class="${j===si?'on':j<si?'dn'+(window._stp&&j===window._jd?' jd':''):''}" onclick="sGo(${j},1)"><i>${j<si?'✓':j+1}</i><span>${esc(stLbl(x,z).replace(/\s*\(.*$/,''))}</span></button>`).join('')}</div>${(()=>{const p=Math.round((si+1)/n*100),p0=window._lpE===ed&&window._lp!=null?window._lp:0;window._lpE=ed;window._lp=p;return `<div class="spb" style="--p0:${p0}%;--p:${p}%"><i></i></div>`})()}`:''}${k==='s'?chefBtn():''}${k?g((n>1?(si+1)+'/'+n+' · ':'')+stLbl(x,k),k,k==='t'?[ed.t]:k==='r'?rs:k==='s'?ed.s:k==='x'?ed.x:[ed.b],k==='x'?1:0):''}<div class="sf">${last?`<div class="st"><button class="qb" onclick="sq(-1)">−</button><b>${ed.q}</b><button class="qb" onclick="sq(1)">+</button></div>`:''}${si>0?`<button class="btn g" onclick="sGo(-1)">‹</button>`:''}${last?`<button class="btn" onclick="sok()">${ed.i>=0?t('upd'):t('addc')} · ${eur(sum*ed.q)}</button>`:`<button class="btn" onclick="sGo(1)">${t('next')} ›</button>`}</div>`);
  const nb=document.querySelector('.box');if(nb)nb.scrollTop=st;const sa=document.querySelector('.stp button.on'),sp=sa&&sa.parentNode;if(sp&&getComputedStyle(sp).direction==='ltr')sp.scrollLeft=sa.offsetLeft-(sp.clientWidth-sa.offsetWidth)/2}
-function sok(){const _r=window._moRepl;window._moRepl=null;if(_r&&ed&&ed.id===_r.m&&ed.i<0){const k=cart.findIndex(c=>sig(c)===sig(_r.l));if(k>=0){cart[k].q-=_r.l.q;if(cart[k].q<=0)cart.splice(k,1)}}const rc=rct(),l={id:ed.id,q:ed.q,s:lst('s').filter(v=>ed.s.includes(v)),r:lst('r').filter(v=>ed.r.includes(v)),x:lst('x').filter(v=>ed.x.includes(v)),t:ed.t||'',b:ed.b};if(ed.i>=0)cart.splice(ed.i,1);const ne=ed.i<0;put(l);ed=null;mod('');bump=l.id;hap();render();fly(rc);if(upOn)upsell();else if(ne){if(!(window.kMenuOffer&&kMenuOffer(l)))toast(l)}}
+function sok(){const _r=window._moRepl;window._moRepl=null;if(_r&&ed&&ed.id===_r.m&&ed.i<0){const k=cart.findIndex(c=>sig(c)===sig(_r.l));if(k>=0){cart[k].q-=_r.l.q;if(cart[k].q<=0)cart.splice(k,1)}
+ if(_r.dl){const j=cart.findIndex(c=>sig(c)===sig(_r.dl));if(j>=0){cart[j].q--;if(cart[j].q<=0)cart.splice(j,1)}}}const rc=rct(),l={id:ed.id,q:ed.q,s:lst('s').filter(v=>ed.s.includes(v)),r:lst('r').filter(v=>ed.r.includes(v)),x:lst('x').filter(v=>ed.x.includes(v)),t:ed.t||'',b:ed.b};if(ed.i>=0)cart.splice(ed.i,1);const ne=ed.i<0;put(l);ed=null;mod('');bump=l.id;hap();render();fly(rc);if(upOn)upsell();else if(ne){if(!(window.kMenuOffer&&kMenuOffer(l)))toast(l)}}
 let taps=0,tt;function tap(){taps++;clearTimeout(tt);tt=setTimeout(()=>taps=0,2500);if(taps>=5){taps=0;pinAsk()}}
 const mod=h=>{const m=$('#m'),had=!!m.firstChild;m.innerHTML=h?`<div class="mod${had?' re':''}${had&&window._stp?' nstep'+(window._bk?' bk':''):''}"><div class="box">${h}</div></div>`:'';if(h&&!had)m.firstChild.classList.add('ent');window._stp=0};
 let mbd=false;
@@ -2063,18 +2064,27 @@ body.a11y .a11b{background:linear-gradient(135deg,#c59b27,#f9e29c,#aa771c)!impor
 /* --- proposition « Passez en menu » --- */
 let moN=0,moS=0,moL=null;
 const mcat=()=>S.cats.find(c=>c.n==='Menus');
+/* boisson déjà prise à part (ex. Softs 0,33 L · Coca-Cola, Caprisun) : elle entre dans le menu au lieu d'être payée deux fois */
+function moDrink(){const D=(S.opt&&S.opt.drinks)||[];for(let k=cart.length-1;k>=0;k--){const c=cart[k],x=find(c.id);if(!x||!x.cat||x.cat.n!=='Boissons')continue;
+ const nm=x.n.startsWith('Softs')?c.b:x.n,d=D.find(z=>nk(z)===nk(nm||''));if(d)return{l:{...c,q:1},name:d,p:unit({...c,q:1})}}return null}
+Object.assign(TR,{moSd:['Votre plat + frites + la boisson déjà choisie ({d})','Je gerecht + frietjes + het gekozen drankje ({d})','Your dish + fries + the drink you already chose ({d})','Tu plato + patatas + la bebida ya elegida ({d})','طبقك + بطاطس + المشروب الذي اخترته ({d})','Dein Gericht + Pommes + das gewählte Getränk ({d})'],
+ moEq:['Même prix 🎉','Zelfde prijs 🎉','Same price 🎉','Mismo precio 🎉','نفس السعر 🎉','Gleicher Preis 🎉'],
+ moSv:['Vous économisez','Je bespaart','You save','Ahorras','توفّر','Du sparst']});
 window.kMenuOffer=function(l){try{
  if(moS>=3||moN>=2)return false;const x=find(l.id);if(!x||!x.cat)return false;const mc=mcat();if(!mc)return false;
  let want='',ty='';const cn=x.cat.n;
  if(cn==='Dürüms'){want=nk(x.n);ty='Dürüm'}else if(cn==='Sandwichs'){want=nk(x.n);ty='Sandwich'}else if(cn==='Bicky'&&/hamburger/i.test(x.n))want='bicky';
  if(!want)return false;const m=mc.items.find(i=>nk(i.n)===want&&!(window._sout&&window._sout[i.id]));
- if(!m||!(m.p>x.p))return false;moS++;moL={l,m,ty};const u=IM(m,mc);
- mod(`<div class="kmo"><h3>${t('moT')}</h3><div class="kmp" style="${u?`background-image:url('${u}')`:''}"></div><h3>${esc(full({...m,cat:mc}))}</h3><p>${t('moS')}</p><span class="kpx">+ ${eur(m.p-x.p)}</span><button class="btn" onclick="kMoYes()">🍟 ${t('moY')}</button><button class="btn g" onclick="kMoNo()">${t('moN')}</button></div>`);
+ if(!m||!(m.p>x.p))return false;
+ const ex=l.x.reduce((s,n)=>s+((EX().find(e=>e.n===n)||{}).p||0),0),dr=l.b?null:moDrink();
+ const df=Math.round((m.p+ex-unit({...l,q:1})-(dr?dr.p:0))*100)/100;
+ moS++;moL={l,m,ty,dr};const u=IM(m,mc);
+ mod(`<div class="kmo"><h3>${t('moT')}</h3><div class="kmp" style="${u?`background-image:url('${u}')`:''}"></div><h3>${esc(full({...m,cat:mc}))}</h3><p>${dr?t('moSd').replace('{d}',esc(dr.name)):t('moS')}</p><span class="kpx">${df>0.004?'+ '+eur(df):df<-0.004?t('moSv')+' '+eur(-df)+' 🎉':t('moEq')}</span><button class="btn" onclick="kMoYes()">🍟 ${t('moY')}</button><button class="btn g" onclick="kMoNo()">${t('moN')}</button></div>`);
  return true}catch(e){return false}};
 window.kMoNo=function(){moN++;moL=null;mod('');render()};
-window.kMoYes=function(){if(!moL)return;const{l,m,ty}=moL;moL=null;
- window._moRepl={m:m.id,l};
- mod('');openSheet(m.id,-1);const mx=find(m.id);ed.s=[...l.s];ed.r=[...l.r];ed.x=[...l.x];if(oF(mx).includes('t')&&ty)ed.t=ty;
+window.kMoYes=function(){if(!moL)return;const{l,m,ty,dr}=moL;moL=null;
+ window._moRepl={m:m.id,l,dl:dr?dr.l:null};
+ mod('');openSheet(m.id,-1);const mx=find(m.id);ed.s=[...l.s];ed.r=[...l.r];ed.x=[...l.x];if(dr)ed.b=dr.name;else if(l.b)ed.b=l.b;if(oF(mx).includes('t')&&ty)ed.t=ty;
  const sp=stepsOf(mx);ed.st=Math.max(0,sp.indexOf('b'));drawSheet()};
 
 /* --- badges « le plus commandé » partagés avec le site --- */
