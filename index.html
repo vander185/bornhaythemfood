@@ -1341,7 +1341,7 @@ function promoHtml(tiles){const Sl=promoSlides(tiles),fb=(tiles[0]||S.cats[0]).i
 let promoT=0;
 function promoStart(){clearInterval(promoT);const p=document.querySelector('.promo[data-n]');if(!p)return;const n=+p.dataset.n;if(n<2)return;promoT=setInterval(()=>{if(!document.body.contains(p)){clearInterval(promoT);return}const k=(+p.dataset.cur+1)%n;p.dataset.cur=k;p.querySelectorAll('.ps').forEach((e,j)=>e.classList.toggle('on',j===k));p.querySelectorAll('.pd i').forEach((e,j)=>e.classList.toggle('on',j===k))},5500)}
 function promoTap(p){const c=(p.dataset.c||'').split(',')[+p.dataset.cur||0];cat=c||p.dataset.f;render()}
-const APP_V='20',hhmm=()=>new Date().toLocaleTimeString('fr-BE',{hour:'2-digit',minute:'2-digit'});let appSig=null;
+const APP_V='21',hhmm=()=>new Date().toLocaleTimeString('fr-BE',{hour:'2-digit',minute:'2-digit'});let appSig=null;
 async function sigOf(u){try{const r=await fetch(u,{method:'HEAD',cache:'no-store'});if(!r.ok)return'';return(r.headers.get('etag')||r.headers.get('last-modified')||'')+'|'+(r.headers.get('content-length')||'')}catch(e){return''}}
 function applyCfg(c){if(!c||!Array.isArray(c.cats)||!c.cats.length)return false;const old=S.cats;
  S.cats=c.cats.filter(rc=>rc&&rc.n).map(rc=>{const oc=old.find(x=>x.n===rc.n)||{id:uid('c'),e:'🍽️',items:[]};return{...oc,n:rc.n,e:rc.e||oc.e,items:(rc.items||[]).filter(x=>x&&x.n).map(ri=>{const oi=oc.items.find(x=>x.n===ri.n)||{id:uid('i')};return{...oi,n:ri.n,p:+ri.p||0,img:ri.img||oi.img||'',sug:ri.sug!=null?!!ri.sug:!!oi.sug}})}});
@@ -1433,9 +1433,9 @@ function payMenu(){const p=S.pay;
  mod(`<div class="mh"><div><h3 id="ptot">${t('payt')} · ${eur(total())}</h3></div><button class="btn g x" onclick="payBack()">✕</button></div>
  ${S.tip&&S.tip.on?tipBox():''}
  ${p.card?`<button class="pm" onclick="payRun('card')">💳<span>${t('card')}<small>Visa · Mastercard · Bancontact (${esc(AT().prov)})</small></span></button>`:''}
- ${p.qr?`<button class="pm" onclick="payRun('qr')">📱<span>Payconiq<small>${t('qrs')}</small></span></button>`:''}
+ ${p.qr&&String(p.merchant||'').trim()?`<button class="pm" onclick="payRun('qr')">📱<span>Payconiq<small>${t('qrs')}</small></span></button>`:''}
  ${p.cash?`<button class="pm" onclick="payRun('cash')">💶<span>${t('cash')}<small>${t('cashs')}</small></span></button>`:''}
- ${!p.card&&!p.qr&&!p.cash?`<p>${t('nopay')}</p>`:''}
+ ${!p.card&&!(p.qr&&String(p.merchant||'').trim())&&!p.cash?`<p>${t('nopay')}</p>`:''}
  `)}
 let ref='';
 function payRun(m){ref='HF'+S.seq;const p=S.pay,tt0=total();
@@ -1559,7 +1559,7 @@ function addTerm(){const id=uid('t');S.terms.push({id,prov:'SumUp',mode:'Bluetoo
 function delTerm(id){S.terms=S.terms.filter(t=>t.id!==id);if(S.pay.term===id)S.pay.term=S.terms[0].id;save();admin()}
 async function btPair(id){if(!navigator.bluetooth)return uiNote('Le Bluetooth web n’est pas disponible ici. Utilisez Chrome sur Android ou sur ordinateur.');
  try{const d=await navigator.bluetooth.requestDevice({acceptAllDevices:true});tu(id,'dev',d.name||d.id);admin()}catch(e){if(e.name!=='NotFoundError')uiNote('Association impossible : '+e.message)}}
-function aPay(){return `<div class="sec"><h3>Moyens de paiement</h3>${tg('card','Carte bancaire (Visa, Mastercard, Bancontact) via terminal')}${tg('qr','QR code Payconiq')}${tg('cash','Espèces (paiement à la caisse)')}${tg('demo','Mode démo (bouton « simuler paiement reçu ») · à désactiver dès que le terminal est branché')}</div>
+function aPay(){return `<div class="sec"><h3>Moyens de paiement</h3>${tg('card','Carte bancaire (Visa, Mastercard, Bancontact) via terminal')}${tg('qr','QR code Payconiq')}${S.pay.qr&&!String(S.pay.merchant||'').trim()?'<p class="note" style="color:var(--bad)">⚠ Payconiq est caché aux clients tant que l’identifiant marchand Payconiq n’est pas rempli (Compte bancaire).</p>':''}${tg('cash','Espèces (paiement à la caisse)')}${tg('demo','Mode démo (bouton « simuler paiement reçu ») · à désactiver dès que le terminal est branché')}</div>
  <div class="sec"><h3>Terminaux de paiement</h3>${S.terms.map(t=>`<div class="sec" style="${t.id===S.pay.term?'border-color:var(--gold)':''}"><label class="tg"><input type="radio" name="at" ${t.id===S.pay.term?'checked':''} onchange="S.pay.term='${t.id}';save();admin()">Terminal utilisé par la borne</label>
  <label class="fld">Marque<select onchange="tu('${t.id}','prov',this.value)">${so(PROV,t.prov)}</select></label>
  <label class="fld">Connexion<select onchange="tu('${t.id}','mode',this.value);admin()">${so(MODES,t.mode)}</select></label>
