@@ -1133,7 +1133,7 @@ Suppléments|➕|Feta 1;Kefta 3.5;Merguez 3.5;Extra sauce 0.75;Cheddar 1;Poulet 
 Boissons|🥤|Thé à la menthe 1 pers. 2.5;Thé à la menthe 2 pers. 4.5;Thé à la menthe 5 pers. 8;Café noir 2.5;Café au lait 3;Redbull 3;Freez 3;Softs 0,33 L 2;Caprisun 1
 Desserts|🍰|Dame blanche 3.5;Pâtisserie marocaine 3.5;Tiramisu maison 3.5`;
 const SAUCES0=["Mayonnaise","Ketchup","Andalouse","Algérienne","Samouraï","Blanche","Harissa","Américaine","Brazil","Bicky","Mammouth","Tartare","Cocktail","Curry ketchup","Sauce à l’ail","Barbecue","Moutarde","Piquante","Pili-pili","Sweet chili","Pita"],CRUD0=["Salade","Tomates","Oignons","Concombre","Maïs","Carottes","Chou blanc","Olives"],DRINKS0=["Coca-Cola","Coca-Cola Zéro","Fanta","Fanta Citron","Sprite","Schweppes Lemon","Schweppes Agrumes","Ice Tea","Orangina","Caprisun","Eau"];
-const OPT0={'Dürüms':'srxb','Sandwichs':'srxb','Panini':'srxb','Tacos':'srxb','Kapsalon':'srxb','Menus':'srxb','Bicky':'srxb','Assiettes':'sxb','Grillades':'sxb','Salades':'srb','Frites & plus':'sb','Spécialités':'b'};
+const OPT0={'Dürüms':'srxb','Sandwichs':'srxb','Panini':'srxb','Tacos':'srxb','Kapsalon':'srxb','Menus':'srxb','Bicky':'srxb','Assiettes':'sxb','Grillades':'sxb','Salades':'srxb','Frites & plus':'sxb','Spécialités':'b'};
 const NOX='Non merci',NOS='Sans sauce',NOC='Sans crudités',ALLC='Toutes les crudités';
 const LANGS=[['fr','Français','🇫🇷'],['nl','Nederlands','🇳🇱'],['en','English','🇬🇧'],['es','Español','🇪🇸'],['ar','العربية','🇸🇦'],['de','Deutsch','🇩🇪']];
 const TR={
@@ -1309,8 +1309,9 @@ function topSug(){const A=all(),by={},m={};A.forEach(i=>{by[i.id]=i;by[full(i)]=
 const full=i=>{const p=PRE[i.cat.n];return p&&!i.n.startsWith(p)?p+' '+i.n:i.n};
 const MTYPES=['Dürüm','Sandwich'],MNOT=/^(Bicky|Pita|Menu enfant)/i,oF=i=>{if(i.n.startsWith('Softs'))return'b';let o=co(i.cat);if(i.cat&&i.cat.n==='Menus'){o=o.replace('t','');if(!MNOT.test(i.n))o='t'+o}return o};
 const bReq=i=>i.cat.n==='Menus'||i.n.startsWith('Softs');
-const DP=()=>{const it=all().find(i=>i.n.startsWith('Softs'));return it?it.p:2};
-const CAPP=()=>{const it=all().find(i=>/^capri/i.test(i.n));return it?it.p:1};
+/* boisson ajoutée à un plat : même prix que sur le site (réglage « dp » du site, 1,50 € par défaut) */
+const DP=()=>(+window._sdp>0?+window._sdp:1.5);
+const CAPP=()=>{const it=all().find(i=>/^capri\s*sun/i.test(i.n)&&i.cat&&i.cat.n==='Boissons');return it?it.p:1};
 const unit=l=>{const x=find(l.id),cap=/capri/i.test(l.b||'');return(cap&&x.n.startsWith('Softs')?CAPP():x.p)+(l.b&&!bReq(x)?(cap?CAPP():DP()):0)+l.x.reduce((s,n)=>s+((EX().find(e=>e.n===n)||{}).p||0),0)};
 const desc=(l,tr)=>{const T=(k,f)=>tr?t(k):f,V=v=>tr?ov(v):v;return[l.t&&(tr?ov(l.t):l.t),l.r.length&&T('garn','Garniture')+' : '+(isAllCru(l.r)?V(ALLC):l.r.map(V).join(', ')),l.s.length&&T('sauces','Sauces')+' : '+l.s.map(V).join(', '),l.x.length&&T('extra','Extra')+' : '+l.x.join(', '),tr&&l.b?ov(l.b):l.b].filter(Boolean)};
 const sig=l=>JSON.stringify([l.id,l.s,l.r,l.x,l.b,l.t||'']);
@@ -1349,7 +1350,7 @@ function promoHtml(tiles){const Sl=promoSlides(tiles),fb=(tiles[0]||S.cats[0]).i
 let promoT=0;
 function promoStart(){clearInterval(promoT);const p=document.querySelector('.promo[data-n]');if(!p)return;const n=+p.dataset.n;if(n<2)return;promoT=setInterval(()=>{if(!document.body.contains(p)){clearInterval(promoT);return}const k=(+p.dataset.cur+1)%n;p.dataset.cur=k;p.querySelectorAll('.ps').forEach((e,j)=>e.classList.toggle('on',j===k));p.querySelectorAll('.pd i').forEach((e,j)=>e.classList.toggle('on',j===k))},5500)}
 function promoTap(p){const c=(p.dataset.c||'').split(',')[+p.dataset.cur||0];cat=c||p.dataset.f;render()}
-const APP_V='28',hhmm=()=>new Date().toLocaleTimeString('fr-BE',{hour:'2-digit',minute:'2-digit'});let appSig=null;
+const APP_V='29',hhmm=()=>new Date().toLocaleTimeString('fr-BE',{hour:'2-digit',minute:'2-digit'});let appSig=null;
 async function sigOf(u){try{const r=await fetch(u,{method:'HEAD',cache:'no-store'});if(!r.ok)return'';return(r.headers.get('etag')||r.headers.get('last-modified')||'')+'|'+(r.headers.get('content-length')||'')}catch(e){return''}}
 function applyCfg(c){if(!c||!Array.isArray(c.cats)||!c.cats.length)return false;const old=S.cats;
  S.cats=c.cats.filter(rc=>rc&&rc.n).map(rc=>{const oc=old.find(x=>x.n===rc.n)||{id:uid('c'),e:'🍽️',items:[]};return{...oc,n:rc.n,e:rc.e||oc.e,items:(rc.items||[]).filter(x=>x&&x.n).map(ri=>{const oi=oc.items.find(x=>x.n===ri.n)||{id:uid('i')};return{...oi,n:ri.n,p:+ri.p||0,img:ri.img||oi.img||'',sug:ri.sug!=null?!!ri.sug:!!oi.sug}})}});
@@ -1426,7 +1427,7 @@ function drawSheet(){const x=find(ed.id),ex=EX(),bx=document.querySelector('.box
  const sts=stepsOf(x),n=sts.length,si=Math.min(ed.st||0,Math.max(0,n-1)),k=sts[si],last=si>=n-1;
  const g=(t,k,sel,pr)=>`<div class="grp"><h4>${t}</h4><div class="opg${k==='s'?' sm':''}">${lst(k).map((v,j)=>opTile(k,v,sel,j,pr?(ex.find(e=>e.n===v)||{}).p||0:0)).join('')}</div></div>`;
  const rs=[...ed.r,...(isAllCru(ed.r)?[ALLC]:[])];
- const sum=x.p+(ed.b&&!bReq(x)?DP():0)+ed.x.reduce((s,n)=>s+((ex.find(e=>e.n===n)||{}).p||0),0);
+ const sum=x.p+(ed.b&&!bReq(x)?(/capri/i.test(ed.b)?CAPP():DP()):0)+ed.x.reduce((s,n)=>s+((ex.find(e=>e.n===n)||{}).p||0),0);
  mod(`<div class="mh"><div><h3>${esc(full(x))}</h3><p class="note" style="margin:2px 0 0">${eur(x.p)}</p>${sheetInfo(x)}</div><button class="btn g x" onclick="ed=null;if(upOn)upsell();else mod(\'\')">✕</button></div>${n>1?`<div class="stp">${sts.map((z,j)=>`<button class="${j===si?'on':j<si?'dn'+(window._stp&&j===window._jd?' jd':''):''}" onclick="sGo(${j},1)"><i>${j<si?'✓':j+1}</i><span>${esc(stLbl(x,z).replace(/\s*\(.*$/,''))}</span></button>`).join('')}</div>${(()=>{const p=Math.round((si+1)/n*100),p0=window._lpE===ed&&window._lp!=null?window._lp:0;window._lpE=ed;window._lp=p;return `<div class="spb" style="--p0:${p0}%;--p:${p}%"><i></i></div>`})()}`:''}${k==='s'?chefBtn():''}${k?g((n>1?(si+1)+'/'+n+' · ':'')+stLbl(x,k),k,k==='t'?[ed.t]:k==='r'?rs:k==='s'?ed.s:k==='x'?ed.x:[ed.b],k==='x'?1:0):''}<div class="sf">${last?`<div class="st"><button class="qb" onclick="sq(-1)">−</button><b>${ed.q}</b><button class="qb" onclick="sq(1)">+</button></div>`:''}${si>0?`<button class="btn g" onclick="sGo(-1)">‹</button>`:''}${last?`<button class="btn" onclick="sok()">${ed.i>=0?t('upd'):t('addc')} · ${eur(sum*ed.q)}</button>`:`<button class="btn" onclick="sGo(1)">${t('next')} ›</button>`}</div>`);
  const nb=document.querySelector('.box');if(nb)nb.scrollTop=st;const sa=document.querySelector('.stp button.on'),sp=sa&&sa.parentNode;if(sp&&getComputedStyle(sp).direction==='ltr')sp.scrollLeft=sa.offsetLeft-(sp.clientWidth-sa.offsetWidth)/2}
 function sok(){const _r=window._moRepl;window._moRepl=null;if(_r&&ed&&ed.id===_r.m&&ed.i<0){const k=cart.findIndex(c=>sig(c)===sig(_r.l));if(k>=0){cart[k].q-=_r.l.q;if(cart[k].q<=0)cart.splice(k,1)}
@@ -1802,7 +1803,7 @@ setTimeout(ocLive,2000);addEventListener('online',()=>{try{_ocES&&_ocES.close()}
 async function siteSync(){const H=HQ();if(!H.db)return;let cf;
  try{cf=await fbFetch('/site_config.json',{},9000)}catch(e){return}
  if(!cf)return;const g=cf.cfg||{};
- window._scfg={pre:String(g.noPre||'').trim(),pad:Math.min(4,Math.max(1,Math.round(+g.noPad)||2)),start:Math.max(1,Math.round(+g.noStart)||1)};
+ window._sdp=+g.dp>0?+g.dp:0;window._scfg={pre:String(g.noPre||'').trim(),pad:Math.min(4,Math.max(1,Math.round(+g.noPad)||2)),start:Math.max(1,Math.round(+g.noStart)||1)};
  if(!H.sync||cf.customD)return;
  const ov=cf.ov||{},ph=cf.ph||{},idx={},sph={},sout={};let ch=0;
  S.cats.forEach(c=>c.items.forEach(i=>{idx[_nk(c.n+'|'+i.n)]=i}));
