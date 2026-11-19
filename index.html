@@ -1349,7 +1349,7 @@ function promoHtml(tiles){const Sl=promoSlides(tiles),fb=(tiles[0]||S.cats[0]).i
 let promoT=0;
 function promoStart(){clearInterval(promoT);const p=document.querySelector('.promo[data-n]');if(!p)return;const n=+p.dataset.n;if(n<2)return;promoT=setInterval(()=>{if(!document.body.contains(p)){clearInterval(promoT);return}const k=(+p.dataset.cur+1)%n;p.dataset.cur=k;p.querySelectorAll('.ps').forEach((e,j)=>e.classList.toggle('on',j===k));p.querySelectorAll('.pd i').forEach((e,j)=>e.classList.toggle('on',j===k))},5500)}
 function promoTap(p){const c=(p.dataset.c||'').split(',')[+p.dataset.cur||0];cat=c||p.dataset.f;render()}
-const APP_V='22',hhmm=()=>new Date().toLocaleTimeString('fr-BE',{hour:'2-digit',minute:'2-digit'});let appSig=null;
+const APP_V='23',hhmm=()=>new Date().toLocaleTimeString('fr-BE',{hour:'2-digit',minute:'2-digit'});let appSig=null;
 async function sigOf(u){try{const r=await fetch(u,{method:'HEAD',cache:'no-store'});if(!r.ok)return'';return(r.headers.get('etag')||r.headers.get('last-modified')||'')+'|'+(r.headers.get('content-length')||'')}catch(e){return''}}
 function applyCfg(c){if(!c||!Array.isArray(c.cats)||!c.cats.length)return false;const old=S.cats;
  S.cats=c.cats.filter(rc=>rc&&rc.n).map(rc=>{const oc=old.find(x=>x.n===rc.n)||{id:uid('c'),e:'🍽️',items:[]};return{...oc,n:rc.n,e:rc.e||oc.e,items:(rc.items||[]).filter(x=>x&&x.n).map(ri=>{const oi=oc.items.find(x=>x.n===ri.n)||{id:uid('i')};return{...oi,n:ri.n,p:+ri.p||0,img:ri.img||oi.img||'',sug:ri.sug!=null?!!ri.sug:!!oi.sug}})}});
@@ -1758,7 +1758,7 @@ let _ocKey='';
 async function openSync(){const H=HQ();if(!H.db)return;try{const g=await fbFetch('/site_config/cfg.json',{},8000)||{};
  window._oc={s:['open','closed','auto'].includes(g.openStatus)?g.openStatus:'auto',h:g.hours||HOURS0}}catch(e){}
  const k=JSON.stringify(shopShut());if(k!==_ocKey){_ocKey=k;if(view==='idle')render()}}
-setTimeout(openSync,1500);setInterval(openSync,60000);addEventListener('online',()=>setTimeout(openSync,1000));
+setTimeout(openSync,1500);setInterval(openSync,15000);addEventListener('online',()=>setTimeout(openSync,1000));
 async function siteSync(){const H=HQ();if(!H.db)return;let cf;
  try{cf=await fbFetch('/site_config.json',{},9000)}catch(e){return}
  if(!cf)return;const g=cf.cfg||{};
